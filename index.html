@@ -2064,8 +2064,7 @@
 
                 cursorTimeout = setTimeout(() => {
                     scrollCursor.style.opacity = '0';
-                    accumulatedScroll = 0;
-                    scrollProgress.style.strokeDashoffset = 283;
+                    // We DO NOT reset accumulatedScroll here, so progress is remembered!
                 }, 500);
             }
         }, { passive: false, capture: true });
@@ -2120,11 +2119,9 @@
                     }, 800);
                 }
 
-                // Hide cursor if scrolling stops
+                // Hide cursor if scrolling stops (but keep progress)
                 cursorTimeout = setTimeout(() => {
                     scrollCursor.style.opacity = '0';
-                    accumulatedScroll = 0;
-                    scrollProgress.style.strokeDashoffset = 283;
                 }, 500);
             }
         }, { passive: false });
