@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordercube - Servicekräfte Stärken</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            background-color: black;
+            color: white;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Fixed Global Frame */
+        #global-frame {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            pointer-events: none;
+            border: 1.5rem solid white;
+            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        @media (max-width: 768px) {
+            #global-frame {
+                border-width: 1rem;
+            }
+        }
+
+        /* Animations */
+        .fade-in-left {
+            opacity: 0;
+            transform: translateX(-110vw);
+            animation: slideInFromLeft 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+
+        .fade-in-right {
+            opacity: 0;
+            transform: translateX(100px);
+            animation: fadeInRight 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+
+        .fade-in-down {
+            opacity: 0;
+            transform: translateY(-40px);
+            animation: fadeInDown 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+
+        @keyframes slideInFromLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-100 {
+            animation-delay: 100ms;
+        }
+
+        .delay-200 {
+            animation-delay: 200ms;
+        }
+
+        .delay-300 {
+            animation-delay: 300ms;
+        }
+
+        .delay-500 {
+            animation-delay: 500ms;
+        }
+
+        .delay-700 {
+            animation-delay: 700ms;
+        }
+
+        .delay-800 {
+            animation-delay: 800ms;
+        }
+
+        .delay-900 {
+            animation-delay: 900ms;
+        }
+
+        .delay-1000 {
+            animation-delay: 1000ms;
+        }
+
+        .delay-1100 {
+            animation-delay: 1100ms;
+        }
+
+        .text-block {
+            background-color: white;
+            color: black;
+            mix-blend-mode: screen;
+            display: inline-block;
+            padding: 0.25em 0.5em;
+            font-weight: 900;
+            line-height: 1;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .hover-text-block {
+            position: relative;
+            color: white;
+            transition: color 0.4s ease;
+            padding: 0.25em 0.5em;
+            font-weight: 900;
+            cursor: pointer;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .hover-text-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            transition: right 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            z-index: -1;
+        }
+
+        .hover-text-block:hover {
+            color: black;
+            mix-blend-mode: screen;
+        }
+
+        .hover-text-block:hover::before {
+            right: 0;
+        }
+
+        /* Active State for Section 2 Slider */
+        .hover-text-block.is-active {
+            background-color: white !important;
+            color: black !important;
+            mix-blend-mode: screen !important;
+        }
+
+        .hover-text-block.is-active::before {
+            display: none !important;
+        }
+
+        .hover-lift {
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-3px);
+        }
+
+        .logo-placeholder {
+            filter: grayscale(100%) brightness(200%);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .logo-placeholder:hover {
+            opacity: 1;
+            filter: grayscale(0%) brightness(100%);
+        }
+
+        .strikethrough-text {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        .bg-overlay-dark {
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.8) 100%);
+        }
+
+        /* Section Layout */
+        .section-wrapper {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            background: black;
+        }
+
+        @keyframes fadeOutLeft {
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+        }
+
+        @keyframes fadeOutRight {
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+
+        .fade-out-left {
+            animation: fadeOutLeft 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards !important;
+        }
+
+        .fade-out-right {
+            animation: fadeOutRight 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards !important;
+        }
+
+        /* Initial state for scroll-triggered animations */
+        .section-wrapper .fade-in-left,
+        .section-wrapper .fade-in-right {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .section-wrapper.active-section .fade-in-left,
+        .section-wrapper.active-section .fade-in-right {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Feature Active State */
+        .slide-feature.is-active span {
+            background-color: white !important;
+            color: black !important;
+        }
+
+        .slide-feature.is-active div {
+            opacity: 1 !important;
+        }
+
+        /* 1-by-1 Logo Animation Classes */
+        .logo-item {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .logo-item.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .logo-item.hide {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        /* Global Staggered Item */
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .stagger-item.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-item.hide {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    </style>
+</head>
+
+<body class="bg-black">
+    <!-- The Global Frame Over Everything -->
+    <div id="global-frame"></div>
+
+    <nav
+        class="fixed top-0 w-full p-12 pl-16 flex justify-between items-center z-[100] fade-in-down pointer-events-auto">
+        <!-- Logo -->
+        <a href="#" class="z-50 flex items-center gap-3 transition-opacity hover:opacity-80">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 143 40" height="28" width="100">
+                <g clip-path="url(#clip0_36_970)">
+                    <path fill="white" d="M19.5265 39.9999L0 20.4768L0.829961 8.52332L12.7835 7.69336L32.3099 27.2198L31.48 39.1733L19.5265 39.9999ZM1.6186 19.8707L20.1326 38.3847L30.0095 37.6994L30.6948 27.8225L12.1774 9.30851L2.30392 9.99383L1.6186 19.8707Z"></path>
+                    <path fill="white" d="M12.7835 32.3099L0.829961 31.48L0 19.5265L19.5265 0L31.48 0.829961L32.3099 12.7835L12.7835 32.3099ZM2.30392 30.006L12.1808 30.6913L30.6948 12.1774L30.006 2.30392L20.1326 1.6186L1.6186 20.1326L2.30392 30.006Z"></path>
+                    <path fill="white" d="M43.4453 12.8975H45.7527V22.8949L60.8917 12.8975L64.9795 12.9388L57.9163 17.5742C56.9313 18.2216 55.9016 18.8966 54.8306 19.5991C53.7596 20.3017 52.692 21.0008 51.6313 21.693C50.5706 22.3886 49.5409 23.0671 48.5353 23.7283C47.5297 24.3895 46.6033 24.9956 45.7527 25.5501L43.4453 27.0481V12.8975ZM53.2946 19.0653L55.2163 17.7705L57.286 19.7989C58.3502 20.7184 59.2731 21.507 60.048 22.1682C60.8228 22.8294 61.5254 23.4321 62.1522 23.9797C62.7789 24.5272 63.3747 25.0404 63.9326 25.5191C64.494 25.9978 65.0897 26.5143 65.7234 27.0688H62.283L58.822 24.0933C58.3915 23.7145 57.9645 23.346 57.5478 22.981C57.1311 22.6159 56.7591 22.2991 56.4354 22.0305C56.06 21.6999 53.6459 19.3477 53.2946 19.0653Z"></path>
+                    <path fill="white" d="M72.0059 27.0859V12.918H74.3339V27.0859H72.0059Z"></path>
+                    <path fill="white" d="M102.222 24.8784V27.0859H81.6172V12.918H83.9245V24.8784H102.222Z"></path>
+                    <path fill="white" d="M108.699 27.0859V12.918H111.027V27.0859H108.699Z"></path>
+                    <path fill="white" d="M125.092 12.918H142.904V15.1255H125.092C124.376 15.1255 123.711 15.2529 123.098 15.5112C122.485 15.7695 121.948 16.1207 121.49 16.565C121.032 17.0127 120.67 17.5292 120.408 18.1181C120.147 18.707 120.012 19.3304 120.012 19.995V20.0157C120.012 20.6907 120.147 21.3278 120.419 21.9236C120.687 22.5193 121.056 23.0359 121.521 23.4767C121.986 23.9175 122.526 24.2654 123.139 24.5202C123.752 24.7785 124.403 24.9059 125.092 24.9059H140.596V21.1349H136.488L134.969 18.9274H142.904V27.1031H125.092C124.121 27.1031 123.191 26.924 122.299 26.5658C121.407 26.2077 120.622 25.7083 119.94 25.0678C119.258 24.4272 118.714 23.673 118.311 22.8121C117.905 21.9477 117.705 21.011 117.705 19.9985C117.705 18.9998 117.908 18.0699 118.311 17.2055C118.718 16.3411 119.258 15.5938 119.94 14.9602C120.622 14.3265 121.407 13.8271 122.299 13.4621C123.191 13.1005 124.121 12.918 125.092 12.918Z"></path>
+                </g>
+                <defs>
+                    <clipPath id="clip0_36_970">
+                        <rect fill="white" height="40" width="142.901"></rect>
+                    </clipPath>
+                </defs>
+            </svg>
+        </a>
+
+        <div class="hidden lg:flex bg-white/20 rounded-full px-8 py-3 border border-white/30 shadow-2xl"
+            style="backdrop-filter: blur(40px); box-shadow: inset 0 0 20px rgba(255,255,255,0.1);">
+            <ul class="flex gap-8 text-[11px] font-bold tracking-widest text-gray-300">
+                <li><a href="#" class="hover:text-white transition-colors duration-300">FÄLLE</a></li>
+                <li><a href="#" class="hover:text-white transition-colors duration-300">FEATURES</a></li>
+                <li><a href="#" class="hover:text-white transition-colors duration-300">REFERENZEN</a></li>
+                <li><a href="#" class="hover:text-white transition-colors duration-300">WIRKUNG</a></li>
+                <li><a href="#" class="hover:text-white transition-colors duration-300">FAQ</a></li>
+                <li><a href="#" class="hover:text-white transition-colors duration-300">KONTAKT</a></li>
+            </ul>
+        </div>
+
+        <a href="#"
+            class="bg-[#cba07c] hover:bg-[#d8ae8a] text-white px-7 py-3 rounded-full text-[11px] font-bold tracking-widest hover-lift">
+            BESTELLEN
+        </a>
+    </nav>
+
+    <!-- Section 1: Hero -->
+    <div class="section-wrapper" id="hero-section">
+        <!-- Local Video Background -->
+        <div class="absolute inset-0 w-full h-full z-0 bg-black">
+            <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2070"
+                class="w-full h-full object-cover opacity-80" alt="Restaurant Interior">
+        </div>
+
+        <main class="flex-1 flex items-start pt-52 pl-6 w-full">
+            <div class="max-w-4xl w-full">
+                <h1
+                    class="text-5xl md:text-[4rem] font-black uppercase tracking-tighter flex flex-col items-start mb-8 leading-[0.85]">
+                    <span class="text-block stagger-item">SERVICEKRÄFTE</span>
+                    <span class="text-block stagger-item">STÄRKEN</span>
+                </h1>
+                <p
+                    class="text-base md:text-[1.1rem] text-white mb-10 leading-tight stagger-item max-w-2xl font-medium pl-10">
+                    Intelligentes Kellnerruf-System zur Verbesserung der Servicequalität,<br>
+                    Optimierung des Umsatzes und Entschärfung des Personalmangels
+                </p>
+                <div class="pl-10">
+                    <button
+                        class="flex items-center gap-4 bg-[#2a3441]/80 hover:bg-[#344050]/90 backdrop-blur-md border border-white/10 text-white px-6 py-4 rounded-full text-xs font-semibold tracking-widest transition-all duration-300 fade-in-left delay-500 hover-lift">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                        VIDEO ANSEHEN
+                    </button>
+                </div>
+            </div>
+
+            <div class="absolute bottom-12 right-6 flex flex-col items-end hidden lg:flex">
+                <div
+                    class="bg-white text-black text-[10px] font-black py-2 px-6 mb-6 tracking-[0.1em] uppercase fade-in-right delay-700">
+                    UNS VERTRAUEN
+                </div>
+                <div class="flex flex-col gap-6 items-end pr-10" id="hero-logo-list">
+                    <div class="text-white text-xl font-serif logo-item">Hilton</div>
+                    <div class="text-white text-2xl font-black logo-item">METRO</div>
+                    <div class="text-white text-xl font-black italic logo-item">VELTINS</div>
+                    <div class="text-white text-lg font-serif logo-item">Marriott</div>
+                    <div class="text-white text-[10px] font-black tracking-[0.15em] logo-item flex flex-col items-end gap-2 mt-2">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 3l10 8-1.5 1.5L12 6 3.5 12.5 2 11l10-8z" />
+                            <path d="M6 13v7h4v-4h4v-4h4v-7l-6-4.5L6 13z" />
+                        </svg>
+                        ACCOR HOTELS
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div
+            class="absolute bottom-12 left-16 flex items-center gap-4 cursor-pointer group fade-in-left delay-700 z-10">
+            <div
+                class="w-10 h-10 rounded-full border border-white flex items-center justify-center group-hover:bg-white transition-all duration-300">
+                <svg class="w-4 h-4 text-white group-hover:text-black transition-colors" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
+            <span class="text-white text-[14px] font-medium tracking-normal uppercase">FÄLLE ANSEHEN</span>
+        </div>
+    </div>
+
+    <!-- Section 2: Info -->
+    <div class="section-wrapper" id="section-2-wrapper">
+        <div class="absolute inset-0 z-0">
+            <img id="section-2-bg-img-back" src=""
+                class="absolute inset-0 w-full h-full object-cover brightness-75 opacity-0 transition-opacity duration-1000"
+                alt="">
+            <img id="section-2-bg-img-front"
+                src="https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1920"
+                class="absolute inset-0 w-full h-full object-cover brightness-75 transition-opacity duration-1000"
+                alt="Service Background">
+            <div class="absolute inset-0 bg-black/40"></div>
+        </div>
+
+        <div class="relative h-full flex items-center px-6 w-full pt-48 section-content">
+            <div class="flex flex-col md:flex-row w-full justify-between items-center gap-10">
+                <div class="max-w-sm fade-in-left">
+                    <div class="bg-white p-10 shadow-2xl">
+                        <p class="text-black text-base leading-relaxed font-medium transition-opacity duration-500"
+                            id="section-2-info-text">
+                            Gäste sind bereit zu bestellen - aber kein Kellner in Sicht. Dieses klassische Szenario kann
+                            selbst mit dem besten Servicepersonal passieren. Besonders wenn Gäste dann ihre Meinung
+                            ändern, geht Umsatz verloren.
+                        </p>
+                    </div>
+                    <div class="flex mt-0 cursor-pointer group/btn" id="cta-slide-btn">
+                        <div
+                            class="bg-white text-[#b48c5a] px-8 py-5 text-[11px] font-bold uppercase tracking-[0.2em] border-t border-gray-50 flex-1 flex items-center">
+                            So hilft Ordercube
+                        </div>
+                        <div
+                            class="bg-[#b48c5a] text-white w-16 flex items-center justify-center group-hover/btn:bg-[#9a764a] transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-end text-right pr-0 gap-0 leading-[0.85]" id="headline-stack">
+                    <div class="hover-text-block is-active text-4xl md:text-[3rem] cursor-pointer fade-in-right delay-100"
+                        data-index="0">BESTELLWUNSCH</div>
+                    <div class="hover-text-block text-4xl md:text-[3rem] cursor-pointer fade-in-right delay-200"
+                        data-index="1">GETRÄNK ANFORDERN</div>
+                    <div class="hover-text-block text-4xl md:text-[3rem] cursor-pointer fade-in-right delay-300"
+                        data-index="2">BEREIT ZU ZAHLEN</div>
+                    <div class="hover-text-block text-4xl md:text-[3rem] cursor-pointer fade-in-right delay-400"
+                        data-index="3">UNÜBERSICHTLICH</div>
+                    <div class="hover-text-block text-4xl md:text-[3rem] cursor-pointer fade-in-right delay-500"
+                        data-index="4">PERSONALMANGEL</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-12 left-16 flex items-center gap-4 cursor-pointer group z-30" id="next-slide-btn">
+            <div
+                class="w-10 h-10 rounded-full border border-white flex items-center justify-center group-hover:bg-white transition-all duration-300">
+                <svg class="w-4 h-4 text-white group-hover:text-black transition-colors" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <span class="text-white text-[14px] font-medium tracking-normal uppercase">NÄCHSTER FALL</span>
+        </div>
+    </div>
+
+    <!-- Section 3: Features -->
+    <div class="section-wrapper" id="section-3-wrapper">
+        <div class="absolute inset-0 z-0 bg-black">
+            <img id="section-3-bg-img-back" src=""
+                class="absolute inset-0 w-full h-full object-cover brightness-50 opacity-0 transition-opacity duration-1000"
+                alt="">
+            <img id="section-3-bg-img-front"
+                src="https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1920"
+                class="absolute inset-0 w-full h-full object-cover brightness-50 transition-opacity duration-1000"
+                alt="Features Background">
+
+        </div>
+
+        <div class="relative h-full flex flex-col justify-between px-16 py-32 z-10">
+            <div class="flex flex-row w-full justify-between items-center">
+                <!-- Left Sidebar Features -->
+                <div class="flex flex-col gap-6 fade-in-left delay-400" id="feature-stack">
+                    <div class="flex items-center gap-4 cursor-pointer group/feat slide-feature" data-index="0">
+                        <div
+                            class="w-6 h-6 flex items-center justify-center opacity-60 group-hover/feat:opacity-100 transition-opacity">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
+                            </svg>
+                        </div>
+                        <span
+                            class="text-white text-[13px] font-bold tracking-[0.2em] uppercase py-2 px-4 transition-all duration-300">KELLNERRUF</span>
+                    </div>
+                    <div class="flex items-center gap-4 cursor-pointer group/feat slide-feature is-active"
+                        data-index="1">
+                        <div
+                            class="w-6 h-6 flex items-center justify-center opacity-60 group-hover/feat:opacity-100 transition-opacity">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M3 3v18h18V3H3zm16 16H5V5h14v14zM11 7h2v2h-2V7zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2zm-4-8h2v2H7V7zm0 4h2v2H7v-2zm0 4h2v2H7v-2zm8-8h2v2h-2V7zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2z" />
+                            </svg>
+                        </div>
+                        <span
+                            class="text-white text-[13px] font-bold tracking-[0.2em] uppercase py-2 px-4 transition-all duration-300">TISCHPLAN</span>
+                    </div>
+                    <div class="flex items-center gap-4 cursor-pointer group/feat slide-feature" data-index="2">
+                        <div
+                            class="w-6 h-6 flex items-center justify-center opacity-60 group-hover/feat:opacity-100 transition-opacity">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                            </svg>
+                        </div>
+                        <span
+                            class="text-white text-[13px] font-bold tracking-[0.2em] uppercase py-2 px-4 transition-all duration-300">LED
+                            KERZE</span>
+                    </div>
+                    <div class="flex items-center gap-4 cursor-pointer group/feat slide-feature" data-index="3">
+                        <div
+                            class="w-6 h-6 flex items-center justify-center opacity-60 group-hover/feat:opacity-100 transition-opacity">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 18V6h16v12H4z" />
+                            </svg>
+                        </div>
+                        <span
+                            class="text-white text-[13px] font-bold tracking-[0.2em] uppercase py-2 px-4 transition-all duration-300">FOODRUNNER
+                            & PAGER</span>
+                    </div>
+                    <div class="flex items-center gap-4 cursor-pointer group/feat slide-feature" data-index="4">
+                        <div
+                            class="w-6 h-6 flex items-center justify-center opacity-60 group-hover/feat:opacity-100 transition-opacity">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                            </svg>
+                        </div>
+                        <span
+                            class="text-white text-[13px] font-bold tracking-[0.2em] uppercase py-2 px-4 transition-all duration-300">DIEBSTAHLSCHUTZ</span>
+                    </div>
+                    <div class="flex items-center gap-4 cursor-pointer group/feat slide-feature" data-index="5">
+                        <div
+                            class="w-6 h-6 flex items-center justify-center opacity-60 group-hover/feat:opacity-100 transition-opacity">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+                            </svg>
+                        </div>
+                        <span
+                            class="text-white text-[13px] font-bold tracking-[0.2em] uppercase py-2 px-4 transition-all duration-300">TECHNISCHE
+                            DATEN</span>
+                    </div>
+                </div>
+
+                <!-- Right Side Info Box -->
+                <div class="max-w-sm fade-in-right delay-400">
+                    <div class="mb-6">
+                        <p class="text-[#cba07c] text-xl italic font-serif" id="feature-title">"Überblick auf einen
+                            Blick"</p>
+                    </div>
+                    <div class="bg-white p-10 shadow-2xl">
+                        <p class="text-black text-sm leading-relaxed font-medium" id="feature-desc">
+                            Echtzeit-Überblick über Ihr Restaurant-Layout: Sehen Sie auf einen Blick, welche Tische
+                            Service benötigen, besetzt oder frei sind. Der interaktive Grundriss hilft, Sitzordnungen zu
+                            optimieren und steigert die Serviceeffizienz.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between w-full">
+                <div class="flex items-center gap-4 cursor-pointer group z-30" id="next-feature-btn">
+                    <div
+                        class="w-10 h-10 rounded-full border border-white flex items-center justify-center group-hover:bg-white transition-all duration-300">
+                        <svg class="w-4 h-4 text-white group-hover:text-black transition-colors" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <span class="text-white text-[14px] font-medium tracking-normal uppercase">NÄCHSTES FEATURE</span>
+                </div>
+
+                <div class="flex flex-col items-end gap-1">
+                    <div class="flex h-4 w-12">
+                        <div class="bg-black flex-1"></div>
+                        <div class="bg-red-600 flex-1"></div>
+                        <div class="bg-yellow-400 flex-1"></div>
+                    </div>
+                    <span class="text-white text-[10px] font-bold tracking-widest opacity-80">MADE IN GERMANY</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4: Referenzen -->
+    <div class="section-wrapper" id="section-4-wrapper">
+        <!-- Background with Cross-fade -->
+        <div class="absolute inset-0 z-0 bg-black">
+            <img id="section-4-bg-img-back" src=""
+                class="absolute inset-0 w-full h-full object-cover brightness-50 opacity-0 transition-opacity duration-1000"
+                alt="">
+            <img id="section-4-bg-img-front"
+                src="https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1920"
+                class="absolute inset-0 w-full h-full object-cover brightness-50 transition-opacity duration-1000"
+                alt="Reference Background">
+        </div>
+
+        <div class="relative h-full flex flex-col z-10 px-0">
+            <!-- Top Navigation & Pagination -->
+            <div class="flex justify-between items-start pt-32 px-16">
+                <div
+                    class="bg-white/20 backdrop-blur-md rounded-full px-6 py-3 flex items-center gap-3 cursor-pointer hover:bg-white/30 transition-all border border-white/20">
+                    <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                    <span class="text-white text-[10px] font-bold tracking-widest uppercase">VIDEO ANSEHEN</span>
+                </div>
+                <div class="flex gap-2">
+                    <div class="w-12 h-1 bg-white slide-dot transition-all duration-500"></div>
+                    <div class="w-12 h-1 bg-white/30 slide-dot transition-all duration-500"></div>
+                    <div class="w-12 h-1 bg-white/30 slide-dot transition-all duration-500"></div>
+                    <div class="w-12 h-1 bg-white/30 slide-dot transition-all duration-500"></div>
+                    <div class="w-12 h-1 bg-white/30 slide-dot transition-all duration-500"></div>
+                </div>
+                <div class="w-24"></div> <!-- Spacer -->
+            </div>
+
+            <!-- Main Grid Layout -->
+            <div class="flex-1 flex items-center px-16">
+                <div class="flex w-full h-[400px] shadow-2xl">
+                    <!-- Left: Thumbnail Block -->
+                    <div class="flex-1 relative overflow-hidden group/thumb cursor-pointer">
+                        <img id="ref-thumb-img"
+                            src="https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1080"
+                            class="w-full h-full object-cover transition-all duration-700 group-hover/thumb:scale-105"
+                            alt="Ref Thumbnail">
+                        <div
+                            class="absolute top-6 right-6 text-white opacity-60 group-hover/thumb:opacity-100 transition-opacity">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M4 8V4h4m8 0h4v4m0 8v4h-4M8 20H4v-4" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Center: Clean Video Block -->
+                    <div
+                        class="w-[300px] relative overflow-hidden flex items-center justify-center border-x border-white/10">
+                        <video id="ref-center-vid" autoplay loop muted playsinline
+                            class="absolute inset-0 w-full h-full object-cover">
+                            <source src="MicrosoftTeams-video.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <!-- Right: Testimonial Box -->
+                    <div class="flex-1 bg-white p-16 flex flex-col justify-center relative">
+                        <div class="transition-all duration-500" id="ref-content-stack">
+                            <p class="text-gray-500 text-sm italic mb-8 font-serif leading-relaxed text-center"
+                                id="ref-quote">
+                                "Ich empfehle es ausnahmslos jedem Restaurantbesitzer"
+                            </p>
+                            <div class="mt-auto">
+                                <h4 class="text-[#b48c5a] text-base font-bold uppercase tracking-widest mb-1"
+                                    id="ref-author">Denis Faroß</h4>
+                                <p class="text-black text-sm font-black uppercase tracking-widest" id="ref-business">
+                                    Café Eins</p>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-16 right-16 flex gap-4">
+                            <div class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
+                                id="ref-prev-btn">
+                                <svg class="w-4 h-4 text-gray-400 rotate-180" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <div class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
+                                id="ref-next-btn">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <div class="px-16 pb-12">
+                <div class="flex items-center gap-4 cursor-pointer group z-30" id="discover-effect-btn">
+                    <div
+                        class="w-10 h-10 rounded-full border border-white flex items-center justify-center group-hover:bg-white transition-all duration-300">
+                        <svg class="w-4 h-4 text-white group-hover:text-black transition-colors" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <span class="text-white text-[14px] font-medium tracking-normal uppercase">WIRKUNG ENTDECKEN</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 5: FAQ -->
+    <div class="section-wrapper bg-[#1a1512]" id="section-5-wrapper">
+        <div class="relative h-full flex flex-col z-10 pt-24 px-16">
+            <!-- Header Section -->
+            <div class="flex flex-col items-center text-center mb-20">
+                <h2 class="text-white text-5xl font-serif mb-6 tracking-tight">FAQ</h2>
+                <p class="text-white/70 text-sm max-w-2xl">
+                    Und wenn Sie sie nicht finden, fragen Sie uns gerne per
+                    <span
+                        class="underline decoration-dotted underline-offset-4 cursor-pointer hover:text-white transition-colors">E-Mail</span>,
+                    <span
+                        class="underline decoration-dotted underline-offset-4 cursor-pointer hover:text-white transition-colors">Telefon</span>
+                    oder
+                    <span
+                        class="underline decoration-dotted underline-offset-4 cursor-pointer hover:text-white transition-colors">WhatsApp</span>!
+                </p> <!-- FAQ List -->
+                <div class="flex-1 w-full max-w-4xl mx-auto">
+                    <div class="border-t border-white/10">
+                        <!-- Item 1 -->
+                        <div class="faq-item stagger-item border-b border-white/10 overflow-hidden transition-all duration-500">
+                            <div class="flex items-center justify-between py-6 cursor-pointer group px-4 faq-trigger">
+                                <div class="flex gap-6 items-center">
+                                    <span class="text-white font-bold text-lg">Q:</span>
+                                    <span class="text-white/80 text-lg group-hover:text-white transition-colors">Kann
+                                        ich die Farben/Helligkeiten/Zeitintervalle etc. des Ordercubes
+                                        einstellen?</span>
+                                </div>
+                                <svg class="w-5 h-5 text-white/30 group-hover:text-white transition-all transform faq-chevron"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 9l-7 7-7-7" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <div
+                                class="faq-content grid grid-rows-[0fr] transition-all duration-500 ease-in-out opacity-0">
+                                <div class="overflow-hidden">
+                                    <div class="pb-8 px-16 text-white/60 text-lg leading-relaxed">
+                                        Ja, absolut! Über unser Web-Portal oder die App können Sie alle Einstellungen
+                                        individuell für jeden Ordercube anpassen. Dazu gehören nicht nur Farben und
+                                        Helligkeit, sondern auch die spezifischen Zeitintervalle für den Service-Ablauf.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Item 2 -->
+                        <div class="faq-item stagger-item border-b border-white/10 overflow-hidden transition-all duration-500">
+                            <div class="flex items-center justify-between py-6 cursor-pointer group px-4 faq-trigger">
+                                <div class="flex gap-6 items-center">
+                                    <span class="text-white font-bold text-lg">Q:</span>
+                                    <span class="text-white/80 text-lg group-hover:text-white transition-colors">Wie
+                                        kann der Ordercube bei Personalmangel helfen?</span>
+                                </div>
+                                <svg class="w-5 h-5 text-white/30 group-hover:text-white transition-all transform faq-chevron"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 9l-7 7-7-7" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <div
+                                class="faq-content grid grid-rows-[0fr] transition-all duration-500 ease-in-out opacity-0">
+                                <div class="overflow-hidden">
+                                    <div class="pb-8 px-16 text-white/60 text-lg leading-relaxed">
+                                        Der Ordercube optimiert die Laufwege Ihres Personals erheblich. Kellner müssen
+                                        nicht mehr "auf gut Glück" an Tische gehen, sondern werden gezielt gerufen, wenn
+                                        Bedarf besteht. Das spart Zeit, reduziert Stress und ermöglicht es, mit weniger
+                                        Personal einen besseren Service zu bieten.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Item 3 -->
+                        <div class="faq-item stagger-item border-b border-white/10 overflow-hidden transition-all duration-500">
+                            <div class="flex items-center justify-between py-6 cursor-pointer group px-4 faq-trigger">
+                                <div class="flex gap-6 items-center">
+                                    <span class="text-white font-bold text-lg">Q:</span>
+                                    <span class="text-white/80 text-lg group-hover:text-white transition-colors">Wie
+                                        lange hält der Akku eines Ordercubes?</span>
+                                </div>
+                                <svg class="w-5 h-5 text-white/30 group-hover:text-white transition-all transform faq-chevron"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 9l-7 7-7-7" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <div
+                                class="faq-content grid grid-rows-[0fr] transition-all duration-500 ease-in-out opacity-0">
+                                <div class="overflow-hidden">
+                                    <div class="pb-8 px-16 text-white/60 text-lg leading-relaxed">
+                                        Der integrierte Akku ist für den harten Gastronomie-Alltag ausgelegt und hält
+                                        bei normaler Nutzung etwa 24-36 Stunden. So muss der Cube nur alle 2-3 Tage
+                                        geladen werden, was den Aufwand für Ihr Team minimiert.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Item 4 -->
+                        <div class="faq-item stagger-item border-b border-white/10 overflow-hidden transition-all duration-500">
+                            <div class="flex items-center justify-between py-6 cursor-pointer group px-4 faq-trigger">
+                                <div class="flex gap-6 items-center">
+                                    <span class="text-white font-bold text-lg">Q:</span>
+                                    <span class="text-white/80 text-lg group-hover:text-white transition-colors">Sind
+                                        die Ordercubes wasserfest?</span>
+                                </div>
+                                <svg class="w-5 h-5 text-white/30 group-hover:text-white transition-all transform faq-chevron"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 9l-7 7-7-7" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <div
+                                class="faq-content grid grid-rows-[0fr] transition-all duration-500 ease-in-out opacity-0">
+                                <div class="overflow-hidden">
+                                    <div class="pb-8 px-16 text-white/60 text-lg leading-relaxed">
+                                        Ja, die Ordercubes sind spritzwassergeschützt und können problemlos im
+                                        Außenbereich oder auf Tischen stehen, auf denen mal ein Getränk verschüttet
+                                        wird. Sie sind robust gebaut und leicht zu reinigen.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Control Area -->
+            <div class="flex items-end justify-between pb-12">
+                <!-- Contact Button -->
+                <div class="flex items-center gap-4 cursor-pointer group z-30" id="contact-us-trigger-btn">
+                    <div
+                        class="w-10 h-10 rounded-full border border-white flex items-center justify-center group-hover:bg-white transition-all duration-300">
+                        <svg class="w-4 h-4 text-white group-hover:text-black transition-colors" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <span class="text-white text-[14px] font-medium tracking-normal uppercase">KONTAKTIEREN SIE
+                        UNS</span>
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex items-center gap-10">
+                    <div
+                        class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/10 transition-all group">
+                        <svg class="w-4 h-4 text-white/30 group-hover:text-white rotate-180" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-white text-lg font-bold">5</span>
+                        <span class="text-white/30 text-lg">/</span>
+                        <span class="text-white/30 text-lg">7</span>
+                    </div>
+                    <div
+                        class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/10 transition-all group">
+                        <svg class="w-4 h-4 text-white/30 group-hover:text-white" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="w-48"></div> <!-- Spacer -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 6: Contact / Footer -->
+    <div class="section-wrapper bg-black relative" id="section-6-wrapper">
+        <!-- Team Background Image -->
+        <div class="absolute inset-0 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-1000">
+            <img src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1920"
+                class="w-full h-full object-cover" alt="Team Background">
+        </div>
+
+        <div class="relative h-full flex flex-col z-10 px-16">
+            <div class="pt-40 flex flex-col gap-0 items-start">
+                <div class="bg-white px-8 py-4 mb-4 stagger-item">
+                    <span class="text-[#b48c5a] text-2xl font-serif italic">Wir sind für Sie da</span>
+                </div>
+
+                <!-- Main Info Box -->
+                <div class="bg-white p-12 max-w-2xl flex gap-16 shadow-2xl stagger-item">
+                    <!-- Left: Contact Details -->
+                    <div class="flex-1">
+                        <h3 class="text-black font-bold text-lg mb-8">Ordercube GmbH</h3>
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <svg class="w-5 h-5 text-[#b48c5a] shrink-0" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                        stroke-width="2" />
+                                    <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-width="2" />
+                                </svg>
+                                <p class="text-gray-600 text-[14px] leading-relaxed">
+                                    Hochfeldstraße 7<br>
+                                    85567 Grafing b. München<br>
+                                    Bavaria, Germany
+                                </p>
+                            </div>
+                            <div class="flex gap-4 items-center">
+                                <svg class="w-5 h-5 text-[#b48c5a] shrink-0" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path
+                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                                        stroke-width="2" />
+                                </svg>
+                                <p class="text-gray-600 text-[14px]">+49 89 9545 701 20</p>
+                            </div>
+                            <div class="flex gap-4 items-center">
+                                <svg class="w-5 h-5 text-[#b48c5a] shrink-0" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path
+                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                        stroke-width="2" />
+                                </svg>
+                                <p class="text-gray-600 text-[14px]">hello@ordercube.de</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Opening Hours -->
+                    <div class="flex-1 border-l border-gray-100 pl-16">
+                        <h3 class="text-black font-bold text-lg mb-8">Öffnungszeiten</h3>
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <svg class="w-5 h-5 text-[#b48c5a] shrink-0" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" />
+                                </svg>
+                                <p class="text-gray-600 text-[14px] leading-relaxed">
+                                    Montag - Freitag<br>
+                                    09:00 AM - 06:00 PM<br>
+                                    (CET/CEST)
+                                </p>
+                            </div>
+                            <div class="pt-4">
+                                <div class="flex gap-1 mb-2">
+                                    <div class="w-6 h-4 bg-black"></div>
+                                    <div class="w-6 h-4 bg-red-600"></div>
+                                    <div class="w-6 h-4 bg-yellow-400"></div>
+                                </div>
+                                <span class="text-black font-bold text-[10px] tracking-widest uppercase">MADE IN
+                                    GERMANY</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="mt-auto pb-12 flex justify-between items-end">
+                <!-- Social & Back to Top -->
+                <div class="flex flex-col gap-10">
+                    <!-- Social Icons -->
+                    <div class="flex gap-4">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all text-white">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all text-white">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all text-white">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all text-white">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                            </svg>
+                        </a>
+                    </div>
+
+                    <!-- Back to Top -->
+                    <div class="flex items-center gap-4 cursor-pointer group" id="back-to-top-btn">
+                        <div
+                            class="w-10 h-10 rounded-full border border-white flex items-center justify-center group-hover:bg-white transition-all duration-300">
+                            <svg class="w-4 h-4 text-white group-hover:text-black transition-colors rotate-180"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 9l-7 7-7-7" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <span class="text-white text-[12px] font-bold tracking-widest uppercase">ZUM ANFANG</span>
+                    </div>
+                </div>
+
+                <!-- Chat Button -->
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-full px-8 py-4 flex items-center gap-3 cursor-pointer hover:bg-white/20 transition-all border border-white/10">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span class="text-white text-sm font-bold uppercase tracking-widest">CHAT WITH US</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 7: Detailed Footer -->
+    <div class="section-wrapper bg-white relative overflow-hidden" id="section-7-wrapper" style="height: auto; min-height: 100vh;">
+        <div class="h-full flex flex-col z-10 px-16 pt-20">
+            <!-- Top Footer Bar -->
+            <div class="flex justify-between items-center pb-12 border-b border-gray-100 mb-16">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-black flex items-center justify-center rounded-sm">
+                        <div class="w-4 h-4 border-2 border-white rotate-45"></div>
+                    </div>
+                    <span class="text-black font-bold tracking-[0.2em] text-sm">ORDERCUBE</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke-width="2"/></svg>
+                    <span class="text-black font-bold text-lg">+49 89 9545 701 20</span>
+                </div>
+            </div>
+
+            <!-- Main Footer Content -->
+            <div class="grid grid-cols-4 gap-24 flex-1">
+                <!-- Column 1: About -->
+                <div class="space-y-8">
+                    <h4 class="text-black font-bold uppercase tracking-widest text-sm">Ordercube GmbH</h4>
+                    <div class="space-y-6">
+                        <p class="text-gray-500 text-[14px] leading-relaxed">
+                            Ordercube ist ein Hardware- und SaaS-Unternehmen aus Grafing b. München, Bayern, Deutschland. Es ist unsere Vision, das Restauranterlebnis für Gäste, Kellner und Gastronomen nachhaltig zu verbessern.
+                        </p>
+                        <p class="text-gray-500 text-[14px] leading-relaxed">
+                            Seit der Gründung 2016 konnten wir große Gastronomie- und Hotelbetriebe wie METRO AG, NH Hotels und weitere als vertrauensvolle Kunden gewinnen. Mittlerweile sind wir in 18 Ländern weltweit vertreten.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Column 2: Product -->
+                <div class="space-y-8">
+                    <h4 class="text-black font-bold uppercase tracking-widest text-sm">Produkt</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Fälle</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Features</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Wirkung</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Company -->
+                <div class="space-y-8">
+                    <h4 class="text-black font-bold uppercase tracking-widest text-sm">Unternehmen</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Start</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Referenzen</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Faq</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Kontakt</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Partners -->
+                <div class="space-y-8">
+                    <h4 class="text-black font-bold uppercase tracking-widest text-sm">Partner</h4>
+                    <div class="grid grid-cols-2 gap-x-12 gap-y-8 grayscale opacity-70">
+                        <div class="flex items-center stagger-item"><span class="text-black font-black italic text-xl tracking-tighter">METRO</span></div>
+                        <div class="flex items-center stagger-item"><span class="text-black font-serif text-xl">Hilton</span></div>
+                        <div class="flex items-center stagger-item"><span class="text-black font-bold text-sm tracking-widest">ACCORHOTELS</span></div>
+                        <div class="flex items-center stagger-item"><span class="text-black font-serif italic text-lg">ENCHILADA</span></div>
+                        <div class="flex items-center stagger-item"><span class="text-black font-black text-xl">SO USE</span></div>
+                        <div class="flex items-center stagger-item"><span class="text-black font-serif text-xl italic">Marriott</span></div>
+                        <div class="flex items-center stagger-item"><span class="text-black font-black text-xl tracking-tight">VELTINS</span></div>
+                        <div class="flex items-center stagger-item"><span class="text-black font-black text-xl italic">adidas</span></div>
+                        <div class="flex items-center stagger-item"><span class="text-black font-bold text-lg">DEHOGA</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Legal Bar -->
+            <div class="pb-12 pt-8 flex justify-between items-center border-t border-gray-100">
+                <p class="text-gray-400 text-[12px]">© Ordercube GmbH 2016 - 2026</p>
+                <div class="flex gap-8">
+                    <a href="#" class="text-gray-400 hover:text-black transition-colors text-[12px]">Datenschutzerklärung</a>
+                    <a href="#" class="text-gray-400 hover:text-black transition-colors text-[12px]">Nutzungsbedingungen</a>
+                    <a href="#" class="text-gray-400 hover:text-black transition-colors text-[12px]">Impressum</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Smooth Scroll Library -->
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+
+    <script>
+        // Initialize Lenis
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            orientation: 'vertical',
+            gestureOrientation: 'vertical',
+            smoothWheel: true,
+            wheelMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        })
+
+        function raf(time) {
+            lenis.raf(time)
+            requestAnimationFrame(raf)
+        }
+        requestAnimationFrame(raf)
+
+        const frame = document.getElementById('global-frame');
+        const heroContent = document.querySelector('main');
+        const rightLogos = document.querySelector('.lg\\:flex.absolute.bottom-12.right-12');
+        const bottomNav = document.querySelector('.absolute.bottom-12.left-16');
+        const wrappers = document.querySelectorAll('.section-wrapper');
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+
+            // 1. Global Frame Toggle (Dynamic check for perfect fit)
+            let isNearAnySection = false;
+            let activeSectionIndex = -1;
+
+            wrappers.forEach((wrapper, idx) => {
+                const rect = wrapper.getBoundingClientRect();
+                if (Math.abs(rect.top) < 10) {
+                    isNearAnySection = true;
+                    activeSectionIndex = idx;
+                }
+            });
+
+            if (isNearAnySection) {
+                frame.style.opacity = '1';
+                frame.style.transform = 'scale(1)';
+            } else {
+                frame.style.opacity = '0';
+                frame.style.transform = 'scale(1.02)';
+            }
+
+            // 2. Dynamic Content Animations for All Sections
+            wrappers.forEach((wrapper, idx) => {
+                const rect = wrapper.getBoundingClientRect();
+                const isPerfectlyActive = Math.abs(rect.top) < 10;
+
+                if (isPerfectlyActive) {
+                    wrapper.classList.add('active-section');
+                    wrapper.querySelectorAll('.fade-in-left').forEach(el => el.classList.remove('fade-out-left'));
+                    wrapper.querySelectorAll('.fade-in-right').forEach(el => el.classList.remove('fade-out-right'));
+                    
+                    // Logo List Animation for Section 1
+                    if (idx === 0) animateLogosIn('hero-logo-list');
+                    
+                    // Staggered Items for all sections
+                    animateStaggerIn(wrapper);
+                } else {
+                    wrapper.classList.remove('active-section');
+                    wrapper.querySelectorAll('.fade-in-left').forEach(el => el.classList.add('fade-out-left'));
+                    wrapper.querySelectorAll('.fade-in-right').forEach(el => el.classList.add('fade-out-right'));
+                    
+                    if (idx === 0) animateLogosOut('hero-logo-list');
+                    
+                    animateStaggerOut(wrapper);
+                }
+            });
+        });
+
+        // Global Stagger Helper
+        function animateStaggerIn(parent) {
+            const items = parent.querySelectorAll('.stagger-item');
+            items.forEach((item, i) => {
+                setTimeout(() => {
+                    item.classList.remove('hide');
+                    item.classList.add('show');
+                }, i * 150);
+            });
+        }
+
+        function animateStaggerOut(parent) {
+            const items = parent.querySelectorAll('.stagger-item');
+            items.forEach((item, i) => {
+                setTimeout(() => {
+                    item.classList.remove('show');
+                    item.classList.add('hide');
+                }, (items.length - 1 - i) * 80);
+            });
+        }
+
+        // Logo 1-by-1 Helper
+        function animateLogosIn(id) {
+            const logos = document.querySelectorAll(`#${id} .logo-item`);
+            logos.forEach((logo, i) => {
+                setTimeout(() => {
+                    logo.classList.remove('hide');
+                    logo.classList.add('show');
+                }, i * 150);
+            });
+        }
+
+        function animateLogosOut(id) {
+            const logos = document.querySelectorAll(`#${id} .logo-item`);
+            logos.forEach((logo, i) => {
+                setTimeout(() => {
+                    logo.classList.remove('show');
+                    logo.classList.add('hide');
+                }, (logos.length - 1 - i) * 100);
+            });
+        }
+
+        // Global Scroll State
+        let isScrollLocked = false;
+        let globalSectionIndex = 0;
+        let internalStepIndex = 0;
+
+        function getStepsForSection(index) {
+            const wrapper = wrappers[index];
+            if (!wrapper) return 0;
+            
+            let steps = 0;
+            // Custom logic for sections with special sliders
+            if (wrapper.id === 'section-2-wrapper') steps = slidesData.length;
+            else if (wrapper.id === 'section-3-wrapper') steps = featuresData.length;
+            else if (wrapper.id === 'section-4-wrapper') steps = refData.length;
+            else {
+                const staggers = wrapper.querySelectorAll('.stagger-item');
+                steps = staggers.length;
+            }
+            
+            // Ensure at least 3 steps for the "lock" feel
+            return Math.max(steps, 3);
+        }
+
+        function updateInternalStep(sectionIdx, stepIdx, direction) {
+            const wrapper = wrappers[sectionIdx];
+            
+            // Section 2: Slides
+            if (wrapper.id === 'section-2-wrapper') {
+                updateSlide(stepIdx);
+                return;
+            }
+            // Section 3: Features
+            if (wrapper.id === 'section-3-wrapper') {
+                updateFeature(stepIdx);
+                return;
+            }
+            // Section 4: References
+            if (wrapper.id === 'section-4-wrapper') {
+                updateRef(stepIdx);
+                return;
+            }
+            
+            // Default Stagger Logic
+            const items = wrapper.querySelectorAll('.stagger-item');
+            if (direction > 0) {
+                // Show items up to stepIdx
+                items.forEach((item, i) => {
+                    if (i <= stepIdx) {
+                        item.classList.remove('hide');
+                        item.classList.add('show');
+                    }
+                });
+            } else {
+                // Hide items from stepIdx + 1
+                items.forEach((item, i) => {
+                    if (i > stepIdx) {
+                        item.classList.remove('show');
+                        item.classList.add('hide');
+                    }
+                });
+            }
+        }
+
+        function handleInternalScroll(e) {
+            const direction = e.deltaY > 0 ? 1 : -1;
+            const currentWrapper = wrappers[globalSectionIndex];
+            const rect = currentWrapper.getBoundingClientRect();
+            
+            // Check if we are "locked" into the current section
+            const isAtTop = Math.abs(rect.top) < 15;
+            if (!isAtTop) return;
+
+            const totalSteps = getStepsForSection(globalSectionIndex);
+
+            // Forward
+            if (direction > 0) {
+                if (internalStepIndex < totalSteps - 1) {
+                    e.preventDefault();
+                    if (isScrollLocked) return;
+                    
+                    isScrollLocked = true;
+                    lenis.stop(); // Ensure Lenis is stopped while we step
+                    
+                    internalStepIndex++;
+                    updateInternalStep(globalSectionIndex, internalStepIndex, 1);
+                    
+                    setTimeout(() => { 
+                        isScrollLocked = false; 
+                    }, 800);
+                    return;
+                } else {
+                    // Last step reached, allow Lenis to move again
+                    lenis.start();
+                }
+            } 
+            // Backward
+            else {
+                if (internalStepIndex > 0) {
+                    e.preventDefault();
+                    if (isScrollLocked) return;
+                    
+                    isScrollLocked = true;
+                    lenis.stop();
+                    
+                    internalStepIndex--;
+                    updateInternalStep(globalSectionIndex, internalStepIndex, -1);
+                    
+                    setTimeout(() => { 
+                        isScrollLocked = false; 
+                    }, 800);
+                    return;
+                } else {
+                    // First step reached, allow Lenis to move up
+                    lenis.start();
+                }
+            }
+        }
+
+        // Sync globalSectionIndex and manage Lenis stop/start
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            
+            wrappers.forEach((wrapper, idx) => {
+                const rect = wrapper.getBoundingClientRect();
+                
+                // When a section snaps perfectly to top
+                if (Math.abs(rect.top) < 10) {
+                    if (globalSectionIndex !== idx) {
+                        globalSectionIndex = idx;
+                        internalStepIndex = 0;
+                        
+                        // Force a stop when we hit a new section to ensure the lock is felt
+                        lenis.stop();
+                        // Restart after a small delay to allow natural scroll if no steps
+                        if (getStepsForSection(idx) <= 1) {
+                             setTimeout(() => lenis.start(), 500);
+                        }
+                    }
+                }
+            });
+        });
+
+        // Initialize state
+        window.addEventListener('load', () => {
+            // Trigger first section animations immediately
+            if (wrappers.length > 0) {
+                const firstWrapper = wrappers[0];
+                firstWrapper.classList.add('active-section');
+                animateStaggerIn(firstWrapper);
+                animateLogosIn('hero-logo-list');
+                
+                // If it's Section 1, we might want to pre-advance some steps or just show all
+                // For now, let's just make sure the frame is correct
+                frame.style.opacity = '1';
+                frame.style.transform = 'scale(1)';
+            }
+            
+            lenis.stop(); // Start locked
+            setTimeout(() => lenis.start(), 1000);
+        });
+
+        window.addEventListener('wheel', handleInternalScroll, { passive: false });
+        window.addEventListener('touchmove', handleInternalScroll, { passive: false });
+
+        // Section 2 Interactive Slides Logic
+        const slidesData = [
+            {
+                image: "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                text: "Gäste sind bereit zu bestellen - aber kein Kellner in Sicht. Dieses klassische Szenario kann selbst mit dem besten Servicepersonal passieren. Besonders wenn Gäste dann ihre Meinung ändern, geht Umsatz verloren."
+            },
+            {
+                image: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                text: "Ein leeres Glas bedeutet Stillstand beim Umsatz. Mit Ordercube signalisieren Gäste ihren Getränkewunsch diskret und sofort. Das Personal kann gezielt reagieren und die Frequenz der Bestellungen deutlich steigern."
+            },
+            {
+                image: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                text: "Lange Wartezeiten beim Bezahlen sind der häufigste Grund für Frust am Ende eines Besuchs. Eine schnelle Abwicklung sorgt für zufriedene Gäste und einen schnelleren Tischwechsel (Turnover)."
+            },
+            {
+                image: "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                text: "In großen Außenbereichen oder verwinkelten Räumen verliert man leicht den Überblick. Ordercube macht unsichtbare Bedarfe sichtbar und strukturiert die Laufwege Ihres Teams effizient."
+            },
+            {
+                image: "https://images.pexels.com/photos/2101187/pexels-photo-2101187.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                text: "Weniger Personal muss mehr leisten? Ordercube entlastet Ihr Team durch intelligente Priorisierung. So schaffen Ihre Mitarbeiter mehr Service am Gast in kürzerer Zeit, ohne dabei auszubrennen."
+            }
+        ];
+
+        const headlines = document.querySelectorAll('#headline-stack > div');
+        const infoText = document.getElementById('section-2-info-text');
+        const bgImgFront = document.getElementById('section-2-bg-img-front');
+        const bgImgBack = document.getElementById('section-2-bg-img-back');
+        const nextSlideBtn = document.getElementById('next-slide-btn');
+        const ctaSlideBtn = document.getElementById('cta-slide-btn');
+        let currentSlideIndex = 0;
+        let isTransitioning = false;
+
+        function updateSlide(index) {
+            if (isTransitioning || index === currentSlideIndex) return;
+            isTransitioning = true;
+            currentSlideIndex = index;
+
+            // Update Headline States
+            headlines.forEach((h, i) => {
+                if (i === index) h.classList.add('is-active');
+                else h.classList.remove('is-active');
+            });
+
+            // Update Content with fast fade
+            infoText.style.opacity = '0';
+            setTimeout(() => {
+                infoText.textContent = slidesData[index].text;
+                infoText.style.opacity = '1';
+            }, 300);
+
+            // True Cross-fade Image Logic
+            bgImgBack.src = slidesData[index].image;
+            bgImgBack.onload = () => {
+                bgImgBack.classList.remove('opacity-0');
+                bgImgBack.style.opacity = '1';
+                bgImgFront.style.opacity = '0';
+
+                setTimeout(() => {
+                    bgImgFront.src = slidesData[index].image;
+                    bgImgFront.style.opacity = '1';
+                    bgImgBack.style.opacity = '0';
+                    bgImgBack.classList.add('opacity-0');
+                    isTransitioning = false;
+                }, 1000);
+            };
+        }
+
+        headlines.forEach((headline, index) => {
+            headline.addEventListener('click', () => {
+                updateSlide(index);
+            });
+        });
+
+        if (nextSlideBtn) {
+            nextSlideBtn.addEventListener('click', () => {
+                let nextIndex = (currentSlideIndex + 1) % slidesData.length;
+                updateSlide(nextIndex);
+            });
+        }
+
+        if (ctaSlideBtn) {
+            ctaSlideBtn.addEventListener('click', () => {
+                let nextIndex = (currentSlideIndex + 1) % slidesData.length;
+                updateSlide(nextIndex);
+            });
+        }
+
+        // Section 3 Features Logic
+        const featuresData = [
+            {
+                title: "\"Immer zur Stelle\"",
+                desc: "Mit dem Kellnerruf signalisieren Gäste per Knopfdruck ihren Wunsch. Das System informiert das Personal diskret über Smartwatch oder Handheld, was Wartezeiten eliminiert und die Zufriedenheit steigert.",
+                image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
+                bg: "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1920"
+            },
+            {
+                title: "\"Überblick auf einen Blick\"",
+                desc: "Echtzeit-Überblick über Ihr Restaurant-Layout: Sehen Sie auf einen Blick, welche Tische Service benötigen, besetzt oder frei sind. Der interaktive Grundriss hilft, Sitzordnungen zu optimieren und steigert die Serviceeffizienz.",
+                image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
+                bg: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1920"
+            },
+            {
+                title: "\"Ambiente mit Köpfchen\"",
+                desc: "Die LED-Kerze ist nicht nur Deko, sondern das Herzstück. Sie zeigt durch verschiedene Farben den Status des Tisches an. So erkennt das Personal schon aus der Ferne, wo Handlungsbedarf besteht.",
+                image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
+                bg: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1920"
+            },
+            {
+                title: "\"Koordination perfektioniert\"",
+                desc: "Optimieren Sie die Zusammenarbeit zwischen Küche und Service. Der Foodrunner wird gezielt benachrichtigt, wenn Speisen bereitstehen, was unnötige Wege spart und die Speisen heiß zum Gast bringt.",
+                image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
+                bg: "https://images.pexels.com/photos/2101187/pexels-photo-2101187.jpeg?auto=compress&cs=tinysrgb&w=1920"
+            },
+            {
+                title: "\"Sicherheit inklusive\"",
+                desc: "Schützen Sie Ihre Hardware vor unbefugter Mitnahme. Ein integrierter Diebstahlschutz alarmiert das System, wenn ein Ordercube den definierten Bereich verlässt.",
+                image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
+                bg: "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1920"
+            },
+            {
+                title: "\"Technik die begeistert\"",
+                desc: "Lange Akkulaufzeiten, robustes Design und einfachste Konfiguration. Die technischen Daten des Ordercube sind auf den harten Gastronomie-Alltag ausgelegt und garantieren maximale Zuverlässigkeit.",
+                image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
+                bg: "https://images.pexels.com/photos/6267/menu-restaurant-france-eating.jpg?auto=compress&cs=tinysrgb&w=1920"
+            }
+        ];
+
+        const featureItems = document.querySelectorAll('.slide-feature');
+        const featureTitle = document.getElementById('feature-title');
+        const featureDesc = document.getElementById('feature-desc');
+        const featureBgFront = document.getElementById('section-3-bg-img-front');
+        const featureBgBack = document.getElementById('section-3-bg-img-back');
+        const nextFeatureBtn = document.getElementById('next-feature-btn');
+        let currentFeatureIndex = 1;
+        let isFeatureTransitioning = false;
+
+        function updateFeature(index) {
+            if (isFeatureTransitioning || index === currentFeatureIndex) return;
+            isFeatureTransitioning = true;
+            currentFeatureIndex = index;
+
+            featureItems.forEach((f, i) => {
+                if (i === index) f.classList.add('is-active');
+                else f.classList.remove('is-active');
+            });
+
+            featureTitle.style.opacity = '0';
+            featureDesc.style.opacity = '0';
+
+            // Background Cross-fade Logic for Section 3
+            featureBgBack.src = featuresData[index].bg;
+            featureBgBack.onload = () => {
+                featureBgBack.style.opacity = '1';
+                featureBgFront.style.opacity = '0';
+
+                setTimeout(() => {
+                    featureBgFront.src = featuresData[index].bg;
+                    featureBgFront.style.opacity = '1';
+                    featureBgBack.style.opacity = '0';
+
+                    featureTitle.textContent = featuresData[index].title;
+                    featureDesc.textContent = featuresData[index].desc;
+                    featureTitle.style.opacity = '1';
+                    featureDesc.style.opacity = '1';
+                    isFeatureTransitioning = false;
+                }, 1000);
+            };
+        }
+
+        featureItems.forEach((item, index) => {
+            item.addEventListener('click', () => updateFeature(index));
+        });
+
+        if (nextFeatureBtn) {
+            nextFeatureBtn.addEventListener('click', () => {
+                let nextIndex = (currentFeatureIndex + 1) % featuresData.length;
+                updateFeature(nextIndex);
+            });
+        }
+
+        // Section 4 Referenzen Logic
+        const refData = [
+            {
+                quote: "\"Ich empfehle es ausnahmslos jedem Restaurantbesitzer\"",
+                author: "Denis Faroß",
+                business: "Café Eins",
+                logo: "https://ordercube.de/wp-content/uploads/2021/04/cafe-eins-logo.png",
+                thumb: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1080",
+                bg: "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                video: "MicrosoftTeams-video.mp4"
+            },
+            {
+                quote: "\"Ordercube hat unsere Serviceabläufe revolutioniert.\"",
+                author: "Julia Meier",
+                business: "L'Osteria Berlin",
+                logo: "https://ordercube.de/wp-content/uploads/2021/04/logo-losteria.png",
+                thumb: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1080",
+                bg: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                video: "MicrosoftTeams-video (1).mp4"
+            },
+            {
+                quote: "\"Die Gäste lieben das intuitive System und das Personal ist entlastet.\"",
+                author: "Markus Schmidt",
+                business: "Hofbräu München",
+                logo: "https://ordercube.de/wp-content/uploads/2021/04/logo-hofbraeu.png",
+                thumb: "https://images.pexels.com/photos/6267/menu-restaurant-france-eating.jpg?auto=compress&cs=tinysrgb&w=1080",
+                bg: "https://images.pexels.com/photos/6267/menu-restaurant-france-eating.jpg?auto=compress&cs=tinysrgb&w=1920",
+                video: "MicrosoftTeams-video (2).mp4"
+            },
+            {
+                quote: "\"Ein absoluter Gamechanger für unser Team und unsere Effizienz.\"",
+                author: "Sandra Wagner",
+                business: "Beach Bar Sun",
+                logo: "https://ordercube.de/wp-content/uploads/2021/04/cafe-eins-logo.png",
+                thumb: "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1080",
+                bg: "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                video: "MicrosoftTeams-video (3).mp4"
+            },
+            {
+                quote: "\"Nie wieder ohne Ordercube. Der Support ist ebenfalls erstklassig.\"",
+                author: "Thomas Berger",
+                business: "Alpenblick Grill",
+                logo: "https://ordercube.de/wp-content/uploads/2021/04/logo-losteria.png",
+                thumb: "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1080",
+                bg: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                video: "MicrosoftTeams-video (4).mp4"
+            }
+        ];
+
+        let currentRefIndex = 0;
+        let isRefTransitioning = false;
+        const refQuote = document.getElementById('ref-quote');
+        const refAuthor = document.getElementById('ref-author');
+        const refBusiness = document.getElementById('ref-business');
+        const refLogo = document.getElementById('ref-logo-img');
+        const refThumb = document.getElementById('ref-thumb-img');
+        const refCenterVid = document.getElementById('ref-center-vid');
+        const refBgFront = document.getElementById('section-4-bg-img-front');
+        const refBgBack = document.getElementById('section-4-bg-img-back');
+        const refDots = document.querySelectorAll('.slide-dot');
+        const refNext = document.getElementById('ref-next-btn');
+        const refPrev = document.getElementById('ref-prev-btn');
+
+        function updateRef(index) {
+            if (isRefTransitioning || index === currentRefIndex) return;
+            isRefTransitioning = true;
+
+            // Update dots immediately for responsiveness
+            refDots.forEach((dot, i) => {
+                dot.style.backgroundColor = i === index ? 'white' : 'rgba(255,255,255,0.3)';
+            });
+
+            // Fade out current content
+            [refQuote, refAuthor, refBusiness, refThumb, refCenterVid].forEach(el => {
+                if (el) el.style.opacity = '0';
+            });
+
+            setTimeout(() => {
+                // Update Content immediately
+                refQuote.textContent = refData[index].quote;
+                refAuthor.textContent = refData[index].author;
+                refBusiness.textContent = refData[index].business;
+                refThumb.src = refData[index].thumb;
+
+                // Update Video
+                if (refCenterVid) {
+                    refCenterVid.src = refData[index].video;
+                    refCenterVid.load();
+                    refCenterVid.play().catch(e => console.log("Video play failed:", e));
+                }
+
+                // Update Background (Cross-fade)
+                refBgBack.src = refData[index].bg;
+                const finishTransition = () => {
+                    refBgBack.style.opacity = '1';
+                    refBgFront.style.opacity = '0';
+
+                    setTimeout(() => {
+                        refBgFront.src = refData[index].bg;
+                        refBgFront.style.opacity = '1';
+                        refBgBack.style.opacity = '0';
+
+                        // Fade in new content
+                        [refQuote, refAuthor, refBusiness, refThumb, refCenterVid].forEach(el => {
+                            if (el) el.style.opacity = '1';
+                        });
+
+                        currentRefIndex = index;
+                        isRefTransitioning = false;
+                    }, 500);
+                };
+
+                // Trigger background transition regardless of image load status to prevent sticking
+                if (refBgBack.complete) {
+                    finishTransition();
+                } else {
+                    refBgBack.onload = finishTransition;
+                    refBgBack.onerror = finishTransition; // Fallback
+                    // Timeout fallback if image is very slow
+                    setTimeout(finishTransition, 2000);
+                }
+            }, 300);
+        }
+
+        if (refNext) refNext.addEventListener('click', () => updateRef((currentRefIndex + 1) % refData.length));
+        if (refPrev) refPrev.addEventListener('click', () => updateRef((currentRefIndex - 1 + refData.length) % refData.length));
+
+
+        window.addEventListener('load', () => {
+            const vids = document.querySelectorAll('video');
+            vids.forEach(v => {
+                v.muted = true;
+                v.play().catch(e => console.log("Autoplay blocked, waiting for interaction"));
+                // Manual loop backup
+                v.addEventListener('ended', () => {
+                    v.currentTime = 0;
+                    v.play();
+                });
+            });
+        });
+        // Section 5: FAQ Accordion Logic
+        document.querySelectorAll('.faq-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const item = trigger.parentElement;
+                const content = item.querySelector('.faq-content');
+                const chevron = trigger.querySelector('.faq-chevron');
+                const isOpen = content.classList.contains('grid-rows-[1fr]');
+
+                // Close all other items
+                document.querySelectorAll('.faq-content').forEach(c => {
+                    c.classList.remove('grid-rows-[1fr]', 'opacity-100');
+                    c.classList.add('grid-rows-[0fr]', 'opacity-0');
+                    c.closest('.faq-item').classList.remove('bg-white/5');
+                });
+                document.querySelectorAll('.faq-chevron').forEach(ch => ch.classList.remove('rotate-180'));
+
+                if (!isOpen) {
+                    content.classList.remove('grid-rows-[0fr]', 'opacity-0');
+                    content.classList.add('grid-rows-[1fr]', 'opacity-100');
+                    chevron.classList.add('rotate-180');
+                    item.classList.add('bg-white/5');
+                }
+            });
+        });
+        // Section 6: Back to Top Logic
+        const backToTopBtn = document.getElementById('back-to-top-btn');
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', () => {
+                lenis.scrollTo(0);
+            });
+        }
+        // Contact Buttons Scroll Logic
+        document.querySelectorAll('#contact-us-trigger-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const section6 = document.getElementById('section-6-wrapper');
+                if (section6) {
+                    lenis.scrollTo(section6);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
