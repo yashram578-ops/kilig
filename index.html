@@ -205,7 +205,8 @@
         /* Section Layout */
         .section-wrapper {
             position: relative;
-            height: 100dvh;
+            height: 100vh; /* Fallback */
+            height: calc(var(--vh, 1vh) * 100); /* Fixed mobile height */
             width: 100%;
             overflow: hidden;
             background: black;
@@ -1375,6 +1376,14 @@
         <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
 
         <script>
+            // Fix Mobile Viewport Height Shifting
+            function setFixedMobileHeight() {
+                let vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            }
+            window.addEventListener('resize', setFixedMobileHeight);
+            setFixedMobileHeight();
+
             // Initialize Lenis
             const lenis = new Lenis({
                 duration: 1.2,
@@ -1968,6 +1977,8 @@
                             // Force smooth snap, and lock EXACTLY when the animation completes
                             lenis.scrollTo(entry.target, {
                                 duration: 0.8,
+                                force: true, // Prevent user touch from aborting the scroll
+                                lock: true,  // Lock scroll during animation
                                 onComplete: () => {
                                     currentLockedSectionIndex = idx;
                                     lenis.stop();
