@@ -1944,32 +1944,26 @@
         let currentLockedSectionIndex = -1;
         let isSnapping = false;
 
-        // 1. Robust Lock: Intersection Observer catches sections no matter the scroll speed
+        // 1. Desktop Robust Lock: Intersection Observer catches sections at 50%
         const sectionObserver = new IntersectionObserver((entries) => {
+            if (window.innerWidth < 768) return; // Desktop ONLY
+
             entries.forEach(entry => {
-                // When a section becomes 50% visible, grab it!
                 if (entry.isIntersecting && !isSnapping) {
                     const idx = lockedSections.indexOf(entry.target);
                     
                     if (idx !== -1 && currentLockedSectionIndex !== idx) {
                         isSnapping = true;
                         
-                        // Restart briefly to allow the smooth snap animation
                         lenis.start();
+                        lenis.scrollTo(entry.target, { duration: 0.8 });
                         
-                        // Force smooth snap. 
-                        lenis.scrollTo(entry.target, { 
-                            duration: 0.8
-                        });
-                        
-                        // Wait for snap to finish perfectly, then TRUE LOCK
                         setTimeout(() => {
                             currentLockedSectionIndex = idx;
                             lenis.stop(); 
                             accumulatedScroll = 0;
                             isSnapping = false;
                             
-                            // Force frame to activate
                             const frame = document.getElementById('global-frame');
                             if(frame) {
                                 frame.style.opacity = '1';
@@ -1980,7 +1974,42 @@
                 }
             });
         }, {
-            threshold: 0.5 // Require it to be 50% visible to avoid snapping too early
+            threshold: 0.5 
+        });
+
+        // 2. Mobile Natural Lock: Only locks when perfectly fit (within 40px)
+        lenis.on('scroll', () => {
+            if (window.innerWidth >= 768 || isSnapping) return; // Mobile ONLY
+            
+            lockedSections.forEach((sec, i) => {
+                if(!sec) return;
+                const rect = sec.getBoundingClientRect();
+                
+                // If they scroll naturally to a near-perfect fit
+                if (Math.abs(rect.top) < 40 && currentLockedSectionIndex !== i) {
+                    isSnapping = true;
+                    
+                    // Nudge it the last few pixels to be perfectly flush
+                    lenis.scrollTo(sec, { duration: 0.4 });
+                    
+                    setTimeout(() => {
+                        const finalRect = sec.getBoundingClientRect();
+                        // Strict check: Only lock if it truly fit perfectly
+                        if (Math.abs(finalRect.top) < 15) {
+                            currentLockedSectionIndex = i;
+                            lenis.stop(); 
+                            accumulatedScroll = 0;
+                            
+                            const frame = document.getElementById('global-frame');
+                            if(frame) {
+                                frame.style.opacity = '1';
+                                frame.style.transform = 'scale(1)';
+                            }
+                        }
+                        isSnapping = false;
+                    }, 450);
+                }
+            });
         });
 
         // CRITICAL INTERRUPT: Prevent Lenis from aborting the animation
