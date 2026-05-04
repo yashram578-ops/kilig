@@ -205,7 +205,7 @@
         /* Section Layout */
         .section-wrapper {
             position: relative;
-            height: 100vh;
+            height: 100dvh;
             width: 100%;
             overflow: hidden;
             background: black;
@@ -912,7 +912,7 @@
 
     <!-- Section 5: FAQ -->
     <div class="section-wrapper bg-[#1a1512]" id="section-5-wrapper">
-        <div class="relative h-full flex flex-col z-10 pt-24 px-16">
+        <div class="relative h-full flex flex-col z-10 pt-24 px-4 md:px-16">
             <!-- Header Section -->
             <div class="flex flex-col items-center text-center mb-20">
                 <h2 class="text-white text-5xl font-serif mb-6 tracking-tight">FAQ</h2>
@@ -1090,7 +1090,7 @@
                 class="w-full h-full object-cover" alt="Team Background">
         </div>
 
-        <div class="relative h-full flex flex-col z-10 px-16">
+        <div class="relative h-full flex flex-col z-10 px-4 md:px-16">
             <div class="pt-40 flex flex-col gap-0 items-start">
                 <div class="bg-white px-8 py-4 mb-4 stagger-item">
                     <span class="text-[#b48c5a] text-2xl font-serif italic">Wir sind für Sie da</span>
@@ -1965,25 +1965,28 @@
                             // Restart briefly to allow the smooth snap animation
                             lenis.start();
 
-                            // Force smooth snap. 
+                            // Force smooth snap, and lock EXACTLY when the animation completes
                             lenis.scrollTo(entry.target, {
-                                duration: 0.8
-                            });
+                                duration: 0.8,
+                                onComplete: () => {
+                                    currentLockedSectionIndex = idx;
+                                    lenis.stop();
+                                    accumulatedScroll = 0;
+                                    isSnapping = false;
 
-                            // Wait for snap to finish perfectly, then TRUE LOCK
-                            setTimeout(() => {
-                                currentLockedSectionIndex = idx;
-                                lenis.stop();
-                                accumulatedScroll = 0;
-                                isSnapping = false;
-
-                                // Force frame to activate
-                                const frame = document.getElementById('global-frame');
-                                if (frame) {
-                                    frame.style.opacity = '1';
-                                    frame.style.transform = 'scale(1)';
+                                    // Force frame to activate
+                                    const frame = document.getElementById('global-frame');
+                                    if (frame) {
+                                        frame.style.opacity = '1';
+                                        frame.style.transform = 'scale(1)';
+                                    }
                                 }
-                            }, 900);
+                            });
+                            
+                            // Safety timeout: if onComplete never fires for some reason, release the system
+                            setTimeout(() => {
+                                isSnapping = false;
+                            }, 1500);
                         }
                     }
                 });
