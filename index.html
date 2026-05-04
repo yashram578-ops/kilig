@@ -1348,7 +1348,7 @@
     </footer>
 
     <!-- Custom Scroll Cursor -->
-    <div id="custom-scroll-cursor" class="fixed pointer-events-none z-[9999] opacity-0 transition-opacity duration-300 transform -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center justify-center w-12 h-12" style="left: -100px; top: -100px;">
+    <div id="custom-scroll-cursor" class="fixed pointer-events-none z-[9999] opacity-0 transition-opacity duration-300 transform flex items-center justify-center w-12 h-12" style="left: -100px; top: -100px; transform: translate(-50%, -50%);">
         <svg class="absolute inset-0 w-full h-full rotate-[-90deg]" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="45" fill="black" fill-opacity="0.6" stroke="rgba(255,255,255,0.2)" stroke-width="6"></circle>
             <circle id="custom-scroll-progress" cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="6" stroke-dasharray="283" stroke-dashoffset="283" class="transition-all duration-[50ms]"></circle>
@@ -1929,6 +1929,8 @@
             mouseY = e.clientY;
             scrollCursor.style.left = `${mouseX}px`;
             scrollCursor.style.top = `${mouseY}px`;
+            scrollCursor.style.bottom = 'auto';
+            scrollCursor.style.transform = 'translate(-50%, -50%)';
         });
 
         const lockedSections = Array.from(document.querySelectorAll('#hero-section, .section-wrapper')).filter(Boolean);
@@ -1944,8 +1946,6 @@
 
         // 1. Robust Lock: Intersection Observer catches sections no matter the scroll speed
         const sectionObserver = new IntersectionObserver((entries) => {
-            if (window.innerWidth < 768) return; // Desktop only
-
             entries.forEach(entry => {
                 // When a section becomes 50% visible, grab it!
                 if (entry.isIntersecting && !isSnapping) {
@@ -1957,32 +1957,23 @@
                         // Restart briefly to allow the smooth snap animation
                         lenis.start();
                         
-                        // Force smooth snap. lock: true and force: true help prevent lenis from aborting
+                        // Force smooth snap. 
                         lenis.scrollTo(entry.target, { 
-                            duration: 0.8,
-                            lock: true,
-                            force: true 
+                            duration: 0.8
                         });
                         
                         // Wait for snap to finish perfectly, then TRUE LOCK
                         setTimeout(() => {
-                            const rect = entry.target.getBoundingClientRect();
-                            // Ensure it's perfectly aligned before locking
-                            if (Math.abs(rect.top) < 20) {
-                                currentLockedSectionIndex = idx;
-                                lenis.stop(); 
-                                accumulatedScroll = 0;
-                                isSnapping = false;
-                                
-                                // Force frame to activate
-                                const frame = document.getElementById('global-frame');
-                                if(frame) {
-                                    frame.style.opacity = '1';
-                                    frame.style.transform = 'scale(1)';
-                                }
-                            } else {
-                                // If something went wrong, release so they can scroll natively to try again
-                                isSnapping = false;
+                            currentLockedSectionIndex = idx;
+                            lenis.stop(); 
+                            accumulatedScroll = 0;
+                            isSnapping = false;
+                            
+                            // Force frame to activate
+                            const frame = document.getElementById('global-frame');
+                            if(frame) {
+                                frame.style.opacity = '1';
+                                frame.style.transform = 'scale(1)';
                             }
                         }, 900);
                     }
@@ -2001,10 +1992,81 @@
             }
         }, { passive: false, capture: true });
         
+        let touchStartY = 0;
+        let lastTouchY = 0;
+        
+        window.addEventListener('touchstart', (e) => {
+            if (currentLockedSectionIndex === -1) return;
+            touchStartY = e.touches[0].clientY;
+            lastTouchY = touchStartY;
+        }, { passive: true });
+
         window.addEventListener('touchmove', (e) => {
             if (isSnapping) {
                 e.preventDefault();
                 e.stopPropagation();
+                return;
+            }
+
+            // Mobile progress logic
+            if (currentLockedSectionIndex !== -1 && window.innerWidth < 768) {
+                e.preventDefault(); // Stop native scroll
+
+                if (isProcessingStep || lockCooldown) return;
+
+                scrollCursor.style.opacity = '1';
+                scrollCursor.style.left = '50%';
+                scrollCursor.style.top = 'auto';
+                scrollCursor.style.bottom = '40px';
+                scrollCursor.style.transform = 'translate(-50%, 0)';
+                
+                clearTimeout(cursorTimeout);
+
+                let currentY = e.touches[0].clientY;
+                let deltaY = lastTouchY - currentY; // positive = scrolling down
+                lastTouchY = currentY;
+
+                // Amplify touch drag
+                accumulatedScroll += deltaY * 2.5;
+
+                // Clamp accumulation
+                if (accumulatedScroll > scrollThreshold) accumulatedScroll = scrollThreshold;
+                if (accumulatedScroll < -scrollThreshold) accumulatedScroll = -scrollThreshold;
+
+                // Update SVG circle
+                let percentage = Math.abs(accumulatedScroll) / scrollThreshold;
+                let offset = 283 - (283 * Math.min(percentage, 1));
+                scrollProgress.style.strokeDashoffset = offset;
+
+                // Update Arrow Direction
+                if (accumulatedScroll > 0) {
+                    scrollArrow.style.transform = 'rotate(0deg)'; // down
+                } else {
+                    scrollArrow.style.transform = 'rotate(180deg)'; // up
+                }
+
+                // Trigger Step
+                if (Math.abs(accumulatedScroll) >= scrollThreshold) {
+                    isProcessingStep = true;
+                    scrollCursor.style.opacity = '0';
+                    let direction = accumulatedScroll > 0 ? 1 : -1;
+                    accumulatedScroll = 0;
+                    scrollProgress.style.strokeDashoffset = 283;
+                    
+                    handleLockedStep(currentLockedSectionIndex, direction);
+
+                    setTimeout(() => {
+                        isProcessingStep = false;
+                        lockCooldown = true;
+                        setTimeout(() => lockCooldown = false, 500); 
+                    }, 800);
+                }
+
+                cursorTimeout = setTimeout(() => {
+                    scrollCursor.style.opacity = '0';
+                    accumulatedScroll = 0;
+                    scrollProgress.style.strokeDashoffset = 283;
+                }, 500);
             }
         }, { passive: false, capture: true });
 
