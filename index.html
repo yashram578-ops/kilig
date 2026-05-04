@@ -1340,875 +1340,854 @@
                         class="text-gray-400 hover:text-black transition-colors text-[12px]">Datenschutzerklärung</a>
                     <a href="#"
                         class="text-gray-400 hover:text-black transition-colors text-[12px]">Nutzungsbedingungen</a>
-        <div class="flex items-center gap-12 text-white/40 text-sm">
-            <a href="#" class="hover:text-white transition-colors">Impressum</a>
-            <a href="#" class="hover:text-white transition-colors">Datenschutz</a>
-            <a href="#" class="hover:text-white transition-colors">AGB</a>
+                    <div class="flex items-center gap-12 text-white/40 text-sm">
+                        <a href="#" class="hover:text-white transition-colors">Impressum</a>
+                        <a href="#" class="hover:text-white transition-colors">Datenschutz</a>
+                        <a href="#" class="hover:text-white transition-colors">AGB</a>
+                    </div>
+                    </footer>
+
+                    <!-- Custom Scroll Cursor -->
+                    <div id="custom-scroll-cursor"
+                        class="fixed pointer-events-none z-[9999] opacity-0 transition-opacity duration-300 transform flex items-center justify-center w-12 h-12"
+                        style="left: -100px; top: -100px; transform: translate(-50%, -50%);">
+                        <svg class="absolute inset-0 w-full h-full rotate-[-90deg]" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="black" fill-opacity="0.6"
+                                stroke="rgba(255,255,255,0.2)" stroke-width="6"></circle>
+                            <circle id="custom-scroll-progress" cx="50" cy="50" r="45" fill="none" stroke="white"
+                                stroke-width="6" stroke-dasharray="283" stroke-dashoffset="283"
+                                class="transition-all duration-[50ms]"></circle>
+                        </svg>
+                        <svg id="custom-scroll-arrow"
+                            class="w-5 h-5 text-white absolute transition-transform duration-300" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        </svg>
+                    </div>
+
+                    <!-- Scripts -->
+                </div>
+            </div>
         </div>
-    </footer>
 
-    <!-- Custom Scroll Cursor -->
-    <div id="custom-scroll-cursor" class="fixed pointer-events-none z-[9999] opacity-0 transition-opacity duration-300 transform flex items-center justify-center w-12 h-12" style="left: -100px; top: -100px; transform: translate(-50%, -50%);">
-        <svg class="absolute inset-0 w-full h-full rotate-[-90deg]" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="45" fill="black" fill-opacity="0.6" stroke="rgba(255,255,255,0.2)" stroke-width="6"></circle>
-            <circle id="custom-scroll-progress" cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="6" stroke-dasharray="283" stroke-dashoffset="283" class="transition-all duration-[50ms]"></circle>
-        </svg>
-        <svg id="custom-scroll-arrow" class="w-5 h-5 text-white absolute transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-        </svg>
-    </div>
+        <!-- Smooth Scroll Library -->
+        <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
 
-    <!-- Scripts -->
-        </div>
-        </div>
-    </div>
+        <script>
+            // Initialize Lenis
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                orientation: 'vertical',
+                gestureOrientation: 'vertical',
+                smoothWheel: true,
+                wheelMultiplier: 1,
+                smoothTouch: false,
+                touchMultiplier: 2,
+                infinite: false,
+            })
 
-    <!-- Smooth Scroll Library -->
-    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
-
-    <script>
-        // Initialize Lenis
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            orientation: 'vertical',
-            gestureOrientation: 'vertical',
-            smoothWheel: true,
-            wheelMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
-            infinite: false,
-        })
-
-        function raf(time) {
-            lenis.raf(time)
+            function raf(time) {
+                lenis.raf(time)
+                requestAnimationFrame(raf)
+            }
             requestAnimationFrame(raf)
-        }
-        requestAnimationFrame(raf)
 
-        const frame = document.getElementById('global-frame');
-        const heroContent = document.querySelector('main');
-        const rightLogos = document.querySelector('.lg\\:flex.absolute.bottom-12.right-12');
-        const bottomNav = document.querySelector('.absolute.bottom-12.left-16');
-        const wrappers = document.querySelectorAll('.section-wrapper');
+            const frame = document.getElementById('global-frame');
+            const heroContent = document.querySelector('main');
+            const rightLogos = document.querySelector('.lg\\:flex.absolute.bottom-12.right-12');
+            const bottomNav = document.querySelector('.absolute.bottom-12.left-16');
+            const wrappers = document.querySelectorAll('.section-wrapper');
 
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
 
-            // 1. Global Frame Toggle (Dynamic check for perfect fit)
-            let isNearAnySection = false;
-            let activeSectionIndex = -1;
+                // 1. Global Frame Toggle (Dynamic check for perfect fit)
+                let isNearAnySection = false;
+                let activeSectionIndex = -1;
 
-            wrappers.forEach((wrapper, idx) => {
-                const rect = wrapper.getBoundingClientRect();
-                if (Math.abs(rect.top) < 10) {
-                    isNearAnySection = true;
-                    activeSectionIndex = idx;
-                }
-            });
+                wrappers.forEach((wrapper, idx) => {
+                    const rect = wrapper.getBoundingClientRect();
+                    if (Math.abs(rect.top) < 10) {
+                        isNearAnySection = true;
+                        activeSectionIndex = idx;
+                    }
+                });
 
-            if (isNearAnySection) {
-                frame.style.opacity = '1';
-                frame.style.transform = 'scale(1)';
-            } else {
-                frame.style.opacity = '0';
-                frame.style.transform = 'scale(1.02)';
-            }
-
-            // 2. Dynamic Content Animations for All Sections
-            wrappers.forEach((wrapper, idx) => {
-                const rect = wrapper.getBoundingClientRect();
-                const isPerfectlyActive = Math.abs(rect.top) < 10;
-
-                if (isPerfectlyActive) {
-                    wrapper.classList.add('active-section');
-                    wrapper.querySelectorAll('.fade-in-left').forEach(el => el.classList.remove('fade-out-left'));
-                    wrapper.querySelectorAll('.fade-in-right').forEach(el => el.classList.remove('fade-out-right'));
-
-                    // Logo List Animation for Section 1
-                    if (idx === 0) animateLogosIn('hero-logo-list');
-
-                    // Staggered Items for all sections
-                    animateStaggerIn(wrapper);
+                if (isNearAnySection) {
+                    frame.style.opacity = '1';
+                    frame.style.transform = 'scale(1)';
                 } else {
-                    wrapper.classList.remove('active-section');
-                    wrapper.querySelectorAll('.fade-in-left').forEach(el => el.classList.add('fade-out-left'));
-                    wrapper.querySelectorAll('.fade-in-right').forEach(el => el.classList.add('fade-out-right'));
+                    frame.style.opacity = '0';
+                    frame.style.transform = 'scale(1.02)';
+                }
 
-                    if (idx === 0) animateLogosOut('hero-logo-list');
+                // 2. Dynamic Content Animations for All Sections
+                wrappers.forEach((wrapper, idx) => {
+                    const rect = wrapper.getBoundingClientRect();
+                    const isPerfectlyActive = Math.abs(rect.top) < 10;
 
-                    animateStaggerOut(wrapper);
+                    if (isPerfectlyActive) {
+                        wrapper.classList.add('active-section');
+                        wrapper.querySelectorAll('.fade-in-left').forEach(el => el.classList.remove('fade-out-left'));
+                        wrapper.querySelectorAll('.fade-in-right').forEach(el => el.classList.remove('fade-out-right'));
+
+                        // Logo List Animation for Section 1
+                        if (idx === 0) animateLogosIn('hero-logo-list');
+
+                        // Staggered Items for all sections
+                        animateStaggerIn(wrapper);
+                    } else {
+                        wrapper.classList.remove('active-section');
+                        wrapper.querySelectorAll('.fade-in-left').forEach(el => el.classList.add('fade-out-left'));
+                        wrapper.querySelectorAll('.fade-in-right').forEach(el => el.classList.add('fade-out-right'));
+
+                        if (idx === 0) animateLogosOut('hero-logo-list');
+
+                        animateStaggerOut(wrapper);
+                    }
+                });
+            });
+
+            // Global Stagger Helper
+            function animateStaggerIn(parent) {
+                const items = parent.querySelectorAll('.stagger-item');
+                items.forEach((item, i) => {
+                    setTimeout(() => {
+                        item.classList.remove('hide');
+                        item.classList.add('show');
+                    }, i * 150);
+                });
+            }
+
+            function animateStaggerOut(parent) {
+                const items = parent.querySelectorAll('.stagger-item');
+                items.forEach((item, i) => {
+                    setTimeout(() => {
+                        item.classList.remove('show');
+                        item.classList.add('hide');
+                    }, (items.length - 1 - i) * 80);
+                });
+            }
+
+            // Logo 1-by-1 Helper
+            function animateLogosIn(id) {
+                const logos = document.querySelectorAll(`#${id} .logo-item`);
+                logos.forEach((logo, i) => {
+                    setTimeout(() => {
+                        logo.classList.remove('hide');
+                        logo.classList.add('show');
+                    }, i * 150);
+                });
+            }
+
+            function animateLogosOut(id) {
+                const logos = document.querySelectorAll(`#${id} .logo-item`);
+                logos.forEach((logo, i) => {
+                    setTimeout(() => {
+                        logo.classList.remove('show');
+                        logo.classList.add('hide');
+                    }, (logos.length - 1 - i) * 100);
+                });
+            }
+
+            // Initialize state
+            window.addEventListener('load', () => {
+                // Trigger first section animations immediately
+                if (wrappers.length > 0) {
+                    const firstWrapper = wrappers[0];
+                    firstWrapper.classList.add('active-section');
+                    animateStaggerIn(firstWrapper);
+                    animateLogosIn('hero-logo-list');
+
+                    frame.style.opacity = '1';
+                    frame.style.transform = 'scale(1)';
                 }
             });
-        });
 
-        // Global Stagger Helper
-        function animateStaggerIn(parent) {
-            const items = parent.querySelectorAll('.stagger-item');
-            items.forEach((item, i) => {
-                setTimeout(() => {
-                    item.classList.remove('hide');
-                    item.classList.add('show');
-                }, i * 150);
-            });
-        }
-
-        function animateStaggerOut(parent) {
-            const items = parent.querySelectorAll('.stagger-item');
-            items.forEach((item, i) => {
-                setTimeout(() => {
-                    item.classList.remove('show');
-                    item.classList.add('hide');
-                }, (items.length - 1 - i) * 80);
-            });
-        }
-
-        // Logo 1-by-1 Helper
-        function animateLogosIn(id) {
-            const logos = document.querySelectorAll(`#${id} .logo-item`);
-            logos.forEach((logo, i) => {
-                setTimeout(() => {
-                    logo.classList.remove('hide');
-                    logo.classList.add('show');
-                }, i * 150);
-            });
-        }
-
-        function animateLogosOut(id) {
-            const logos = document.querySelectorAll(`#${id} .logo-item`);
-            logos.forEach((logo, i) => {
-                setTimeout(() => {
-                    logo.classList.remove('show');
-                    logo.classList.add('hide');
-                }, (logos.length - 1 - i) * 100);
-            });
-        }
-
-        // Initialize state
-        window.addEventListener('load', () => {
-            // Trigger first section animations immediately
-            if (wrappers.length > 0) {
-                const firstWrapper = wrappers[0];
-                firstWrapper.classList.add('active-section');
-                animateStaggerIn(firstWrapper);
-                animateLogosIn('hero-logo-list');
-
-                frame.style.opacity = '1';
-                frame.style.transform = 'scale(1)';
-            }
-        });
-
-        // Section 2 Interactive Slides Logic
-        // Global Word Animation Helper
-        function animateWords(element, text) {
-            if (!element) return;
-            const words = text.split(' ');
-            element.innerHTML = words.map((word, i) =>
-                `<span class="word-stagger" style="animation-delay: ${i * 0.04}s">${word}</span>`
-            ).join(' ');
-            element.classList.remove('show');
-            void element.offsetWidth;
-            element.classList.add('show');
-            element.style.opacity = '1';
-        }
-
-        const slidesData = [
-            {
-                title: "BESTELLWUNSCH",
-                image: "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                problem: "Gäste sind bereit zu bestellen - aber kein Kellner in Sicht. Dieses klassische Szenario kann selbst mit dem besten Servicepersonal passieren. Besonders wenn Gäste dann ihre Meinung ändern, geht Umsatz verloren.",
-                solution: "Über einen Ordercube können Gäste den Service rufen. Das Servicepersonal wird sofort benachrichtigt und kann den Tisch schnellstmöglich bedienen."
-            },
-            {
-                title: "GETRÄNK ANFORDERN",
-                image: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                problem: "Ein Gast möchte zahlen, aber das Personal ist mit anderen Bestellungen beschäftigt. Die Wartezeit am Ende des Besuchs trübt den Gesamteindruck und verzögert die Neubelegung des Tisches.",
-                solution: "Mit der 'Zahlen'-Funktion am Ordercube weiß der Kellner sofort Bescheid. Er kann direkt die Rechnung mitbringen, was den Bezahlprozess beschleunigt und den Tisch schneller frei macht."
-            },
-            {
-                title: "BEREIT ZU ZAHLEN",
-                image: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                problem: "Gäste haben ausgetrunken, werden aber vom Service übersehen. Jede Minute ohne Getränk ist verschenkter Umsatz und ein potenziell unzufriedener Gast.",
-                solution: "Ein kurzer Druck auf die 'Nachbestellen'-Taste informiert den Service. Das Personal kann gezielt reagieren, was den Getränkeumsatz nachweislich um bis zu 20% steigert."
-            },
-            {
-                title: "UNÜBERSICHTLICH",
-                image: "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                problem: "In großen Außenbereichen oder verwinkelten Räumen verliert man leicht den Überblick. Ohne System bleibt Service am Gast oft Glückssache oder erfordert zu viel Personal.",
-                solution: "Ordercube macht unsichtbare Bedarfe sichtbar. Die digitale Tischübersicht strukturiert die Laufwege Ihres Teams effizient und sorgt für lückenlosen Service in jedem Winkel."
-            },
-            {
-                title: "PERSONALMANGEL",
-                image: "https://images.pexels.com/photos/2101187/pexels-photo-2101187.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                problem: "Personalmangel zwingt Teams zu Höchstleistungen. Ohne Unterstützung sinkt die Servicequalität, während der Stresspegel der Mitarbeiter gefährlich ansteigt.",
-                solution: "Ordercube entlastet Ihr Team durch intelligente Priorisierung. So schaffen Ihre Mitarbeiter mehr Service am Gast in kürzerer Zeit, ohne dabei auszubrennen."
-            }
-        ];
-
-        const headlines = document.querySelectorAll('#headline-stack > div');
-        const infoText = document.getElementById('section-2-info-text');
-        const infoTextDesktop = document.getElementById('section-2-info-text-desktop');
-        const bgImgFront = document.getElementById('section-2-bg-img-front');
-        const bgImgBack = document.getElementById('section-2-bg-img-back');
-        const nextSlideBtn = document.getElementById('next-slide-btn');
-        const nextSlideBtnMobile = document.getElementById('next-slide-btn-mobile');
-        const ctaSlideBtn = document.getElementById('cta-slide-btn');
-
-        let currentSlideIndex = 0;
-        let isSolutionView = true;
-        let isTransitioning = false;
-
-        function updateSlide(index, forceSolution = true) {
-            if (isTransitioning || (index === currentSlideIndex && forceSolution === isSolutionView)) return;
-            isTransitioning = true;
-            currentSlideIndex = index;
-            isSolutionView = forceSolution;
-
-            // Update Headline States
-            headlines.forEach((h, i) => {
-                if (i === index) h.classList.add('is-active');
-                else h.classList.remove('is-active');
-            });
-
-            // Update Pagination & Mobile Title
-            const pagination = document.getElementById('section-2-pagination');
-            if (pagination) {
-                pagination.textContent = `${index + 1} / ${slidesData.length}`;
-                pagination.classList.remove('show');
-                void pagination.offsetWidth;
-                pagination.classList.add('show');
+            // Section 2 Interactive Slides Logic
+            // Global Word Animation Helper
+            function animateWords(element, text) {
+                if (!element) return;
+                const words = text.split(' ');
+                element.innerHTML = words.map((word, i) =>
+                    `<span class="word-stagger" style="animation-delay: ${i * 0.04}s">${word}</span>`
+                ).join(' ');
+                element.classList.remove('show');
+                void element.offsetWidth;
+                element.classList.add('show');
+                element.style.opacity = '1';
             }
 
-            const mobileTitle = document.getElementById('section-2-title-mobile');
-            if (mobileTitle) {
-                mobileTitle.textContent = slidesData[index].title;
-                const titleParent = mobileTitle.closest('.stagger-item') || mobileTitle.parentElement;
-                titleParent.classList.remove('show');
-                void titleParent.offsetWidth;
-                titleParent.classList.add('show');
+            const slidesData = [
+                {
+                    title: "BESTELLWUNSCH",
+                    image: "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                    problem: "Gäste sind bereit zu bestellen - aber kein Kellner in Sicht. Dieses klassische Szenario kann selbst mit dem besten Servicepersonal passieren. Besonders wenn Gäste dann ihre Meinung ändern, geht Umsatz verloren.",
+                    solution: "Über einen Ordercube können Gäste den Service rufen. Das Servicepersonal wird sofort benachrichtigt und kann den Tisch schnellstmöglich bedienen."
+                },
+                {
+                    title: "GETRÄNK ANFORDERN",
+                    image: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                    problem: "Ein Gast möchte zahlen, aber das Personal ist mit anderen Bestellungen beschäftigt. Die Wartezeit am Ende des Besuchs trübt den Gesamteindruck und verzögert die Neubelegung des Tisches.",
+                    solution: "Mit der 'Zahlen'-Funktion am Ordercube weiß der Kellner sofort Bescheid. Er kann direkt die Rechnung mitbringen, was den Bezahlprozess beschleunigt und den Tisch schneller frei macht."
+                },
+                {
+                    title: "BEREIT ZU ZAHLEN",
+                    image: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                    problem: "Gäste haben ausgetrunken, werden aber vom Service übersehen. Jede Minute ohne Getränk ist verschenkter Umsatz und ein potenziell unzufriedener Gast.",
+                    solution: "Ein kurzer Druck auf die 'Nachbestellen'-Taste informiert den Service. Das Personal kann gezielt reagieren, was den Getränkeumsatz nachweislich um bis zu 20% steigert."
+                },
+                {
+                    title: "UNÜBERSICHTLICH",
+                    image: "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                    problem: "In großen Außenbereichen oder verwinkelten Räumen verliert man leicht den Überblick. Ohne System bleibt Service am Gast oft Glückssache oder erfordert zu viel Personal.",
+                    solution: "Ordercube macht unsichtbare Bedarfe sichtbar. Die digitale Tischübersicht strukturiert die Laufwege Ihres Teams effizient und sorgt für lückenlosen Service in jedem Winkel."
+                },
+                {
+                    title: "PERSONALMANGEL",
+                    image: "https://images.pexels.com/photos/2101187/pexels-photo-2101187.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                    problem: "Personalmangel zwingt Teams zu Höchstleistungen. Ohne Unterstützung sinkt die Servicequalität, während der Stresspegel der Mitarbeiter gefährlich ansteigt.",
+                    solution: "Ordercube entlastet Ihr Team durch intelligente Priorisierung. So schaffen Ihre Mitarbeiter mehr Service am Gast in kürzerer Zeit, ohne dabei auszubrennen."
+                }
+            ];
+
+            const headlines = document.querySelectorAll('#headline-stack > div');
+            const infoText = document.getElementById('section-2-info-text');
+            const infoTextDesktop = document.getElementById('section-2-info-text-desktop');
+            const bgImgFront = document.getElementById('section-2-bg-img-front');
+            const bgImgBack = document.getElementById('section-2-bg-img-back');
+            const nextSlideBtn = document.getElementById('next-slide-btn');
+            const nextSlideBtnMobile = document.getElementById('next-slide-btn-mobile');
+            const ctaSlideBtn = document.getElementById('cta-slide-btn');
+
+            let currentSlideIndex = 0;
+            let isSolutionView = true;
+            let isTransitioning = false;
+
+            function updateSlide(index, forceSolution = true) {
+                if (isTransitioning || (index === currentSlideIndex && forceSolution === isSolutionView)) return;
+                isTransitioning = true;
+                currentSlideIndex = index;
+                isSolutionView = forceSolution;
+
+                // Update Headline States
+                headlines.forEach((h, i) => {
+                    if (i === index) h.classList.add('is-active');
+                    else h.classList.remove('is-active');
+                });
+
+                // Update Pagination & Mobile Title
+                const pagination = document.getElementById('section-2-pagination');
+                if (pagination) {
+                    pagination.textContent = `${index + 1} / ${slidesData.length}`;
+                    pagination.classList.remove('show');
+                    void pagination.offsetWidth;
+                    pagination.classList.add('show');
+                }
+
+                const mobileTitle = document.getElementById('section-2-title-mobile');
+                if (mobileTitle) {
+                    mobileTitle.textContent = slidesData[index].title;
+                    const titleParent = mobileTitle.closest('.stagger-item') || mobileTitle.parentElement;
+                    titleParent.classList.remove('show');
+                    void titleParent.offsetWidth;
+                    titleParent.classList.add('show');
+                }
+
+                // Update Content
+                const targetText = isSolutionView ? slidesData[index].solution : slidesData[index].problem;
+
+                // Mobile Word Animation
+                if (infoText) animateWords(infoText, targetText);
+
+                // Desktop Fast Fade
+                if (infoTextDesktop) {
+                    infoTextDesktop.style.opacity = '0';
+                    setTimeout(() => {
+                        infoTextDesktop.textContent = targetText;
+                        infoTextDesktop.style.opacity = '1';
+                    }, 300);
+                }
+
+                // Update CTA Button Text & Icon
+                const ctaMainText = ctaSlideBtn.querySelector('div:first-child');
+                if (ctaMainText) ctaMainText.textContent = isSolutionView ? "Zurück zum Problem" : "So hilft Ordercube";
+
+                const ctaIcon = ctaSlideBtn.querySelector('svg');
+                if (ctaIcon) {
+                    ctaIcon.innerHTML = isSolutionView
+                        ? '<path d="M15 19l-7-7 7-7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />'
+                        : '<path d="M9 5l7 7-7 7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />';
+                }
+
+                // True Cross-fade Image Logic
+                bgImgBack.src = slidesData[index].image;
+                bgImgBack.onload = () => {
+                    bgImgBack.classList.remove('opacity-0');
+                    bgImgBack.style.opacity = '1';
+                    bgImgFront.style.opacity = '0';
+
+                    setTimeout(() => {
+                        bgImgFront.src = slidesData[index].image;
+                        bgImgFront.style.opacity = '1';
+                        bgImgBack.style.opacity = '0';
+                        bgImgBack.classList.add('opacity-0');
+                        isTransitioning = false;
+                    }, 1000);
+                };
             }
 
-            // Update Content
-            const targetText = isSolutionView ? slidesData[index].solution : slidesData[index].problem;
+            headlines.forEach((headline, index) => {
+                headline.addEventListener('click', () => {
+                    updateSlide(index);
+                });
+            });
 
-            // Mobile Word Animation
-            if (infoText) animateWords(infoText, targetText);
+            if (nextSlideBtn) nextSlideBtn.addEventListener('click', () => updateSlide((currentSlideIndex + 1) % slidesData.length));
+            if (nextSlideBtnMobile) nextSlideBtnMobile.addEventListener('click', () => updateSlide((currentSlideIndex + 1) % slidesData.length));
+            if (ctaSlideBtn) ctaSlideBtn.addEventListener('click', () => updateSlide(currentSlideIndex, !isSolutionView));
 
-            // Desktop Fast Fade
-            if (infoTextDesktop) {
-                infoTextDesktop.style.opacity = '0';
+            // Section 3 Features Logic
+            const featuresData = [
+                {
+                    title: "\"Immer zur Stelle\"",
+                    desc: "Mit dem Kellnerruf signalisieren Gäste per Knopfdruck ihren Wunsch. Das System informiert das Personal diskret über Smartwatch oder Handheld, was Wartezeiten eliminiert und die Zufriedenheit steigert.",
+                    image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
+                    bg: "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1920"
+                },
+                {
+                    title: "\"Überblick auf einen Blick\"",
+                    desc: "Echtzeit-Überblick über Ihr Restaurant-Layout: Sehen Sie auf einen Blick, welche Tische Service benötigen, besetzt oder frei sind. Der interaktive Grundriss hilft, Sitzordnungen zu optimieren und steigert die Serviceeffizienz.",
+                    image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
+                    bg: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1920"
+                },
+                {
+                    title: "\"Ambiente mit Köpfchen\"",
+                    desc: "Die LED-Kerze ist nicht nur Deko, sondern das Herzstück. Sie zeigt durch verschiedene Farben den Status des Tisches an. So erkennt das Personal schon aus der Ferne, wo Handlungsbedarf besteht.",
+                    image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
+                    bg: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1920"
+                },
+                {
+                    title: "\"Koordination perfektioniert\"",
+                    desc: "Optimieren Sie die Zusammenarbeit zwischen Küche und Service. Der Foodrunner wird gezielt benachrichtigt, wenn Speisen bereitstehen, was unnötige Wege spart und die Speisen heiß zum Gast bringt.",
+                    image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
+                    bg: "https://images.pexels.com/photos/2101187/pexels-photo-2101187.jpeg?auto=compress&cs=tinysrgb&w=1920"
+                },
+                {
+                    title: "\"Sicherheit inklusive\"",
+                    desc: "Schützen Sie Ihre Hardware vor unbefugter Mitnahme. Ein integrierter Diebstahlschutz alarmiert das System, wenn ein Ordercube den definierten Bereich verlässt.",
+                    image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
+                    bg: "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1920"
+                },
+                {
+                    title: "\"Technik die begeistert\"",
+                    desc: "Lange Akkulaufzeiten, robustes Design und einfachste Konfiguration. Die technischen Daten des Ordercube sind auf den harten Gastronomie-Alltag ausgelegt und garantieren maximale Zuverlässigkeit.",
+                    image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
+                    bg: "https://images.pexels.com/photos/6267/menu-restaurant-france-eating.jpg?auto=compress&cs=tinysrgb&w=1920"
+                }
+            ];
+
+            const featureItems = document.querySelectorAll('.slide-feature');
+            const featureTitle = document.getElementById('feature-title');
+            const featureDesc = document.getElementById('feature-desc');
+            const featureBgFront = document.getElementById('section-3-bg-img-front');
+            const featureBgBack = document.getElementById('section-3-bg-img-back');
+            const nextFeatureBtn = document.getElementById('next-feature-btn');
+            let currentFeatureIndex = 1;
+            let isFeatureTransitioning = false;
+
+            function updateFeature(index) {
+                if (isFeatureTransitioning || index === currentFeatureIndex) return;
+                isFeatureTransitioning = true;
+                currentFeatureIndex = index;
+
+                featureItems.forEach((f, i) => {
+                    if (i === index) f.classList.add('is-active');
+                    else f.classList.remove('is-active');
+                });
+
+                featureTitle.style.opacity = '0';
+                featureDesc.style.opacity = '0';
+
+                // Background Cross-fade Logic for Section 3
+                featureBgBack.src = featuresData[index].bg;
+                featureBgBack.onload = () => {
+                    featureBgBack.style.opacity = '1';
+                    featureBgFront.style.opacity = '0';
+
+                    setTimeout(() => {
+                        featureBgFront.src = featuresData[index].bg;
+                        featureBgFront.style.opacity = '1';
+                        featureBgBack.style.opacity = '0';
+
+                        featureTitle.textContent = featuresData[index].title;
+                        featureDesc.textContent = featuresData[index].desc;
+                        featureTitle.style.opacity = '1';
+                        featureDesc.style.opacity = '1';
+                        isFeatureTransitioning = false;
+                    }, 1000);
+                };
+            }
+
+            featureItems.forEach((item, index) => {
+                item.addEventListener('click', () => updateFeature(index));
+            });
+
+            if (nextFeatureBtn) {
+                nextFeatureBtn.addEventListener('click', () => {
+                    let nextIndex = (currentFeatureIndex + 1) % featuresData.length;
+                    updateFeature(nextIndex);
+                });
+            }
+
+            // Section 4 Referenzen Logic
+            const refData = [
+                {
+                    quote: "\"Ich empfehle es ausnahmslos jedem Restaurantbesitzer\"",
+                    author: "Denis Faroß",
+                    business: "Café Eins",
+                    logo: "https://ordercube.de/wp-content/uploads/2021/04/cafe-eins-logo.png",
+                    thumb: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1080",
+                    bg: "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                    video: "MicrosoftTeams-video.mp4"
+                },
+                {
+                    quote: "\"Ordercube hat unsere Serviceabläufe revolutioniert.\"",
+                    author: "Julia Meier",
+                    business: "L'Osteria Berlin",
+                    logo: "https://ordercube.de/wp-content/uploads/2021/04/logo-losteria.png",
+                    thumb: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1080",
+                    bg: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                    video: "MicrosoftTeams-video (1).mp4"
+                },
+                {
+                    quote: "\"Die Gäste lieben das intuitive System und das Personal ist entlastet.\"",
+                    author: "Markus Schmidt",
+                    business: "Hofbräu München",
+                    logo: "https://ordercube.de/wp-content/uploads/2021/04/logo-hofbraeu.png",
+                    thumb: "https://images.pexels.com/photos/6267/menu-restaurant-france-eating.jpg?auto=compress&cs=tinysrgb&w=1080",
+                    bg: "https://images.pexels.com/photos/6267/menu-restaurant-france-eating.jpg?auto=compress&cs=tinysrgb&w=1920",
+                    video: "MicrosoftTeams-video (2).mp4"
+                },
+                {
+                    quote: "\"Ein absoluter Gamechanger für unser Team und unsere Effizienz.\"",
+                    author: "Sandra Wagner",
+                    business: "Beach Bar Sun",
+                    logo: "https://ordercube.de/wp-content/uploads/2021/04/cafe-eins-logo.png",
+                    thumb: "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1080",
+                    bg: "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                    video: "MicrosoftTeams-video (3).mp4"
+                },
+                {
+                    quote: "\"Nie wieder ohne Ordercube. Der Support ist ebenfalls erstklassig.\"",
+                    author: "Thomas Berger",
+                    business: "Alpenblick Grill",
+                    logo: "https://ordercube.de/wp-content/uploads/2021/04/logo-losteria.png",
+                    thumb: "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1080",
+                    bg: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1920",
+                    video: "MicrosoftTeams-video (4).mp4"
+                }
+            ];
+
+            let currentRefIndex = 0;
+            let isRefTransitioning = false;
+            const refQuote = document.getElementById('ref-quote');
+            const refAuthor = document.getElementById('ref-author');
+            const refBusiness = document.getElementById('ref-business');
+            const refLogo = document.getElementById('ref-logo-img');
+            const refThumb = document.getElementById('ref-thumb-img');
+            const refCenterVid = document.getElementById('ref-center-vid');
+            const refBgFront = document.getElementById('section-4-bg-img-front');
+            const refBgBack = document.getElementById('section-4-bg-img-back');
+            const refDots = document.querySelectorAll('.slide-dot');
+            const refNext = document.getElementById('ref-next-btn');
+            const refPrev = document.getElementById('ref-prev-btn');
+
+            function updateRef(index) {
+                if (isRefTransitioning || index === currentRefIndex) return;
+                isRefTransitioning = true;
+
+                // Update dots immediately for responsiveness
+                refDots.forEach((dot, i) => {
+                    dot.style.backgroundColor = i === index ? 'white' : 'rgba(255,255,255,0.3)';
+                });
+
+                // Fade out current content
+                [refQuote, refAuthor, refBusiness, refThumb, refCenterVid].forEach(el => {
+                    if (el) el.style.opacity = '0';
+                });
+
                 setTimeout(() => {
-                    infoTextDesktop.textContent = targetText;
-                    infoTextDesktop.style.opacity = '1';
+                    // Update Content immediately
+                    refQuote.textContent = refData[index].quote;
+                    refAuthor.textContent = refData[index].author;
+                    refBusiness.textContent = refData[index].business;
+                    refThumb.src = refData[index].thumb;
+
+                    // Update Video
+                    if (refCenterVid) {
+                        refCenterVid.src = refData[index].video;
+                        refCenterVid.load();
+                        refCenterVid.play().catch(e => console.log("Video play failed:", e));
+                    }
+
+                    // Update Background (Cross-fade)
+                    refBgBack.src = refData[index].bg;
+                    const finishTransition = () => {
+                        refBgBack.style.opacity = '1';
+                        refBgFront.style.opacity = '0';
+
+                        setTimeout(() => {
+                            refBgFront.src = refData[index].bg;
+                            refBgFront.style.opacity = '1';
+                            refBgBack.style.opacity = '0';
+
+                            // Fade in new content
+                            [refQuote, refAuthor, refBusiness, refThumb, refCenterVid].forEach(el => {
+                                if (el) el.style.opacity = '1';
+                            });
+
+                            currentRefIndex = index;
+                            isRefTransitioning = false;
+                        }, 500);
+                    };
+
+                    // Trigger background transition regardless of image load status to prevent sticking
+                    if (refBgBack.complete) {
+                        finishTransition();
+                    } else {
+                        refBgBack.onload = finishTransition;
+                        refBgBack.onerror = finishTransition; // Fallback
+                        // Timeout fallback if image is very slow
+                        setTimeout(finishTransition, 2000);
+                    }
                 }, 300);
             }
 
-            // Update CTA Button Text & Icon
-            const ctaMainText = ctaSlideBtn.querySelector('div:first-child');
-            if (ctaMainText) ctaMainText.textContent = isSolutionView ? "Zurück zum Problem" : "So hilft Ordercube";
-
-            const ctaIcon = ctaSlideBtn.querySelector('svg');
-            if (ctaIcon) {
-                ctaIcon.innerHTML = isSolutionView
-                    ? '<path d="M15 19l-7-7 7-7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />'
-                    : '<path d="M9 5l7 7-7 7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />';
-            }
-
-            // True Cross-fade Image Logic
-            bgImgBack.src = slidesData[index].image;
-            bgImgBack.onload = () => {
-                bgImgBack.classList.remove('opacity-0');
-                bgImgBack.style.opacity = '1';
-                bgImgFront.style.opacity = '0';
-
-                setTimeout(() => {
-                    bgImgFront.src = slidesData[index].image;
-                    bgImgFront.style.opacity = '1';
-                    bgImgBack.style.opacity = '0';
-                    bgImgBack.classList.add('opacity-0');
-                    isTransitioning = false;
-                }, 1000);
-            };
-        }
-
-        headlines.forEach((headline, index) => {
-            headline.addEventListener('click', () => {
-                updateSlide(index);
-            });
-        });
-
-        if (nextSlideBtn) nextSlideBtn.addEventListener('click', () => updateSlide((currentSlideIndex + 1) % slidesData.length));
-        if (nextSlideBtnMobile) nextSlideBtnMobile.addEventListener('click', () => updateSlide((currentSlideIndex + 1) % slidesData.length));
-        if (ctaSlideBtn) ctaSlideBtn.addEventListener('click', () => updateSlide(currentSlideIndex, !isSolutionView));
-
-        // Section 3 Features Logic
-        const featuresData = [
-            {
-                title: "\"Immer zur Stelle\"",
-                desc: "Mit dem Kellnerruf signalisieren Gäste per Knopfdruck ihren Wunsch. Das System informiert das Personal diskret über Smartwatch oder Handheld, was Wartezeiten eliminiert und die Zufriedenheit steigert.",
-                image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
-                bg: "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            },
-            {
-                title: "\"Überblick auf einen Blick\"",
-                desc: "Echtzeit-Überblick über Ihr Restaurant-Layout: Sehen Sie auf einen Blick, welche Tische Service benötigen, besetzt oder frei sind. Der interaktive Grundriss hilft, Sitzordnungen zu optimieren und steigert die Serviceeffizienz.",
-                image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
-                bg: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            },
-            {
-                title: "\"Ambiente mit Köpfchen\"",
-                desc: "Die LED-Kerze ist nicht nur Deko, sondern das Herzstück. Sie zeigt durch verschiedene Farben den Status des Tisches an. So erkennt das Personal schon aus der Ferne, wo Handlungsbedarf besteht.",
-                image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
-                bg: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            },
-            {
-                title: "\"Koordination perfektioniert\"",
-                desc: "Optimieren Sie die Zusammenarbeit zwischen Küche und Service. Der Foodrunner wird gezielt benachrichtigt, wenn Speisen bereitstehen, was unnötige Wege spart und die Speisen heiß zum Gast bringt.",
-                image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
-                bg: "https://images.pexels.com/photos/2101187/pexels-photo-2101187.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            },
-            {
-                title: "\"Sicherheit inklusive\"",
-                desc: "Schützen Sie Ihre Hardware vor unbefugter Mitnahme. Ein integrierter Diebstahlschutz alarmiert das System, wenn ein Ordercube den definierten Bereich verlässt.",
-                image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
-                bg: "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            },
-            {
-                title: "\"Technik die begeistert\"",
-                desc: "Lange Akkulaufzeiten, robustes Design und einfachste Konfiguration. Die technischen Daten des Ordercube sind auf den harten Gastronomie-Alltag ausgelegt und garantieren maximale Zuverlässigkeit.",
-                image: "https://ordercube.de/wp-content/uploads/2023/05/ordercube-system-1.png",
-                bg: "https://images.pexels.com/photos/6267/menu-restaurant-france-eating.jpg?auto=compress&cs=tinysrgb&w=1920"
-            }
-        ];
-
-        const featureItems = document.querySelectorAll('.slide-feature');
-        const featureTitle = document.getElementById('feature-title');
-        const featureDesc = document.getElementById('feature-desc');
-        const featureBgFront = document.getElementById('section-3-bg-img-front');
-        const featureBgBack = document.getElementById('section-3-bg-img-back');
-        const nextFeatureBtn = document.getElementById('next-feature-btn');
-        let currentFeatureIndex = 1;
-        let isFeatureTransitioning = false;
-
-        function updateFeature(index) {
-            if (isFeatureTransitioning || index === currentFeatureIndex) return;
-            isFeatureTransitioning = true;
-            currentFeatureIndex = index;
-
-            featureItems.forEach((f, i) => {
-                if (i === index) f.classList.add('is-active');
-                else f.classList.remove('is-active');
-            });
-
-            featureTitle.style.opacity = '0';
-            featureDesc.style.opacity = '0';
-
-            // Background Cross-fade Logic for Section 3
-            featureBgBack.src = featuresData[index].bg;
-            featureBgBack.onload = () => {
-                featureBgBack.style.opacity = '1';
-                featureBgFront.style.opacity = '0';
-
-                setTimeout(() => {
-                    featureBgFront.src = featuresData[index].bg;
-                    featureBgFront.style.opacity = '1';
-                    featureBgBack.style.opacity = '0';
-
-                    featureTitle.textContent = featuresData[index].title;
-                    featureDesc.textContent = featuresData[index].desc;
-                    featureTitle.style.opacity = '1';
-                    featureDesc.style.opacity = '1';
-                    isFeatureTransitioning = false;
-                }, 1000);
-            };
-        }
-
-        featureItems.forEach((item, index) => {
-            item.addEventListener('click', () => updateFeature(index));
-        });
-
-        if (nextFeatureBtn) {
-            nextFeatureBtn.addEventListener('click', () => {
-                let nextIndex = (currentFeatureIndex + 1) % featuresData.length;
-                updateFeature(nextIndex);
-            });
-        }
-
-        // Section 4 Referenzen Logic
-        const refData = [
-            {
-                quote: "\"Ich empfehle es ausnahmslos jedem Restaurantbesitzer\"",
-                author: "Denis Faroß",
-                business: "Café Eins",
-                logo: "https://ordercube.de/wp-content/uploads/2021/04/cafe-eins-logo.png",
-                thumb: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1080",
-                bg: "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                video: "MicrosoftTeams-video.mp4"
-            },
-            {
-                quote: "\"Ordercube hat unsere Serviceabläufe revolutioniert.\"",
-                author: "Julia Meier",
-                business: "L'Osteria Berlin",
-                logo: "https://ordercube.de/wp-content/uploads/2021/04/logo-losteria.png",
-                thumb: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1080",
-                bg: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                video: "MicrosoftTeams-video (1).mp4"
-            },
-            {
-                quote: "\"Die Gäste lieben das intuitive System und das Personal ist entlastet.\"",
-                author: "Markus Schmidt",
-                business: "Hofbräu München",
-                logo: "https://ordercube.de/wp-content/uploads/2021/04/logo-hofbraeu.png",
-                thumb: "https://images.pexels.com/photos/6267/menu-restaurant-france-eating.jpg?auto=compress&cs=tinysrgb&w=1080",
-                bg: "https://images.pexels.com/photos/6267/menu-restaurant-france-eating.jpg?auto=compress&cs=tinysrgb&w=1920",
-                video: "MicrosoftTeams-video (2).mp4"
-            },
-            {
-                quote: "\"Ein absoluter Gamechanger für unser Team und unsere Effizienz.\"",
-                author: "Sandra Wagner",
-                business: "Beach Bar Sun",
-                logo: "https://ordercube.de/wp-content/uploads/2021/04/cafe-eins-logo.png",
-                thumb: "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1080",
-                bg: "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                video: "MicrosoftTeams-video (3).mp4"
-            },
-            {
-                quote: "\"Nie wieder ohne Ordercube. Der Support ist ebenfalls erstklassig.\"",
-                author: "Thomas Berger",
-                business: "Alpenblick Grill",
-                logo: "https://ordercube.de/wp-content/uploads/2021/04/logo-losteria.png",
-                thumb: "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1080",
-                bg: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                video: "MicrosoftTeams-video (4).mp4"
-            }
-        ];
-
-        let currentRefIndex = 0;
-        let isRefTransitioning = false;
-        const refQuote = document.getElementById('ref-quote');
-        const refAuthor = document.getElementById('ref-author');
-        const refBusiness = document.getElementById('ref-business');
-        const refLogo = document.getElementById('ref-logo-img');
-        const refThumb = document.getElementById('ref-thumb-img');
-        const refCenterVid = document.getElementById('ref-center-vid');
-        const refBgFront = document.getElementById('section-4-bg-img-front');
-        const refBgBack = document.getElementById('section-4-bg-img-back');
-        const refDots = document.querySelectorAll('.slide-dot');
-        const refNext = document.getElementById('ref-next-btn');
-        const refPrev = document.getElementById('ref-prev-btn');
-
-        function updateRef(index) {
-            if (isRefTransitioning || index === currentRefIndex) return;
-            isRefTransitioning = true;
-
-            // Update dots immediately for responsiveness
-            refDots.forEach((dot, i) => {
-                dot.style.backgroundColor = i === index ? 'white' : 'rgba(255,255,255,0.3)';
-            });
-
-            // Fade out current content
-            [refQuote, refAuthor, refBusiness, refThumb, refCenterVid].forEach(el => {
-                if (el) el.style.opacity = '0';
-            });
-
-            setTimeout(() => {
-                // Update Content immediately
-                refQuote.textContent = refData[index].quote;
-                refAuthor.textContent = refData[index].author;
-                refBusiness.textContent = refData[index].business;
-                refThumb.src = refData[index].thumb;
-
-                // Update Video
-                if (refCenterVid) {
-                    refCenterVid.src = refData[index].video;
-                    refCenterVid.load();
-                    refCenterVid.play().catch(e => console.log("Video play failed:", e));
-                }
-
-                // Update Background (Cross-fade)
-                refBgBack.src = refData[index].bg;
-                const finishTransition = () => {
-                    refBgBack.style.opacity = '1';
-                    refBgFront.style.opacity = '0';
-
-                    setTimeout(() => {
-                        refBgFront.src = refData[index].bg;
-                        refBgFront.style.opacity = '1';
-                        refBgBack.style.opacity = '0';
-
-                        // Fade in new content
-                        [refQuote, refAuthor, refBusiness, refThumb, refCenterVid].forEach(el => {
-                            if (el) el.style.opacity = '1';
-                        });
-
-                        currentRefIndex = index;
-                        isRefTransitioning = false;
-                    }, 500);
-                };
-
-                // Trigger background transition regardless of image load status to prevent sticking
-                if (refBgBack.complete) {
-                    finishTransition();
-                } else {
-                    refBgBack.onload = finishTransition;
-                    refBgBack.onerror = finishTransition; // Fallback
-                    // Timeout fallback if image is very slow
-                    setTimeout(finishTransition, 2000);
-                }
-            }, 300);
-        }
-
-        if (refNext) refNext.addEventListener('click', () => updateRef((currentRefIndex + 1) % refData.length));
-        if (refPrev) refPrev.addEventListener('click', () => updateRef((currentRefIndex - 1 + refData.length) % refData.length));
+            if (refNext) refNext.addEventListener('click', () => updateRef((currentRefIndex + 1) % refData.length));
+            if (refPrev) refPrev.addEventListener('click', () => updateRef((currentRefIndex - 1 + refData.length) % refData.length));
 
 
-        window.addEventListener('load', () => {
-            const vids = document.querySelectorAll('video');
-            vids.forEach(v => {
-                v.muted = true;
-                v.play().catch(e => console.log("Autoplay blocked, waiting for interaction"));
-                // Manual loop backup
-                v.addEventListener('ended', () => {
-                    v.currentTime = 0;
-                    v.play();
+            window.addEventListener('load', () => {
+                const vids = document.querySelectorAll('video');
+                vids.forEach(v => {
+                    v.muted = true;
+                    v.play().catch(e => console.log("Autoplay blocked, waiting for interaction"));
+                    // Manual loop backup
+                    v.addEventListener('ended', () => {
+                        v.currentTime = 0;
+                        v.play();
+                    });
                 });
             });
-        });
-        // Section 5: FAQ Accordion Logic
-        document.querySelectorAll('.faq-trigger').forEach(trigger => {
-            trigger.addEventListener('click', () => {
-                const item = trigger.parentElement;
-                const content = item.querySelector('.faq-content');
-                const chevron = trigger.querySelector('.faq-chevron');
-                const isOpen = content.classList.contains('grid-rows-[1fr]');
+            // Section 5: FAQ Accordion Logic
+            document.querySelectorAll('.faq-trigger').forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                    const item = trigger.parentElement;
+                    const content = item.querySelector('.faq-content');
+                    const chevron = trigger.querySelector('.faq-chevron');
+                    const isOpen = content.classList.contains('grid-rows-[1fr]');
 
-                // Close all other items
-                document.querySelectorAll('.faq-content').forEach(c => {
-                    c.classList.remove('grid-rows-[1fr]', 'opacity-100');
-                    c.classList.add('grid-rows-[0fr]', 'opacity-0');
-                    c.closest('.faq-item').classList.remove('bg-white/5');
+                    // Close all other items
+                    document.querySelectorAll('.faq-content').forEach(c => {
+                        c.classList.remove('grid-rows-[1fr]', 'opacity-100');
+                        c.classList.add('grid-rows-[0fr]', 'opacity-0');
+                        c.closest('.faq-item').classList.remove('bg-white/5');
+                    });
+                    document.querySelectorAll('.faq-chevron').forEach(ch => ch.classList.remove('rotate-180'));
+
+                    if (!isOpen) {
+                        content.classList.remove('grid-rows-[0fr]', 'opacity-0');
+                        content.classList.add('grid-rows-[1fr]', 'opacity-100');
+                        chevron.classList.add('rotate-180');
+                        item.classList.add('bg-white/5');
+                    }
                 });
-                document.querySelectorAll('.faq-chevron').forEach(ch => ch.classList.remove('rotate-180'));
+            });
+            // Section 6: Back to Top Logic
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+            if (backToTopBtn) {
+                backToTopBtn.addEventListener('click', () => {
+                    lenis.scrollTo(0);
+                });
+            }
+            // Contact Buttons Scroll Logic
+            document.querySelectorAll('#contact-us-trigger-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const section6 = document.getElementById('section-6-wrapper');
+                    if (section6) {
+                        lenis.scrollTo(section6);
+                    }
+                });
+            });
 
-                if (!isOpen) {
-                    content.classList.remove('grid-rows-[0fr]', 'opacity-0');
-                    content.classList.add('grid-rows-[1fr]', 'opacity-100');
-                    chevron.classList.add('rotate-180');
-                    item.classList.add('bg-white/5');
+            // --- Custom Scroll Lock & Cursor Logic (Desktop Only) ---
+            const scrollCursor = document.getElementById('custom-scroll-cursor');
+            const scrollProgress = document.getElementById('custom-scroll-progress');
+            const scrollArrow = document.getElementById('custom-scroll-arrow');
+
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+
+            window.addEventListener('mousemove', (e) => {
+                if (window.innerWidth < 768) return;
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                scrollCursor.style.left = `${mouseX}px`;
+                scrollCursor.style.top = `${mouseY}px`;
+                scrollCursor.style.bottom = 'auto';
+                scrollCursor.style.transform = 'translate(-50%, -50%)';
+            });
+
+            const lockedSections = Array.from(document.querySelectorAll('#hero-section, .section-wrapper')).filter(Boolean);
+
+            let accumulatedScroll = 0;
+            const scrollThreshold = 900; // Amount of wheel delta to complete the circle
+            let isProcessingStep = false;
+            let cursorTimeout;
+            let lockCooldown = false;
+
+            let currentLockedSectionIndex = -1;
+            let isSnapping = false;
+
+            // 1. Robust Lock: Intersection Observer catches sections no matter the scroll speed
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // When a section becomes 50% visible, grab it!
+                    if (entry.isIntersecting && !isSnapping) {
+                        const idx = lockedSections.indexOf(entry.target);
+
+                        if (idx !== -1 && currentLockedSectionIndex !== idx) {
+                            isSnapping = true;
+
+                            // Restart briefly to allow the smooth snap animation
+                            lenis.start();
+
+                            // Force smooth snap. 
+                            lenis.scrollTo(entry.target, {
+                                duration: 0.8
+                            });
+
+                            // Wait for snap to finish perfectly, then TRUE LOCK
+                            setTimeout(() => {
+                                currentLockedSectionIndex = idx;
+                                lenis.stop();
+                                accumulatedScroll = 0;
+                                isSnapping = false;
+
+                                // Force frame to activate
+                                const frame = document.getElementById('global-frame');
+                                if (frame) {
+                                    frame.style.opacity = '1';
+                                    frame.style.transform = 'scale(1)';
+                                }
+                            }, 900);
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.5 // Require it to be 50% visible to avoid snapping too early
+            });
+
+            // CRITICAL INTERRUPT: Prevent Lenis from aborting the animation
+            // By using capture: true, we intercept the event BEFORE Lenis sees it
+            window.addEventListener('wheel', (e) => {
+                if (isSnapping) {
+                    e.preventDefault();
+                    e.stopPropagation(); // Hide event from Lenis!
                 }
-            });
-        });
-        // Section 6: Back to Top Logic
-        const backToTopBtn = document.getElementById('back-to-top-btn');
-        if (backToTopBtn) {
-            backToTopBtn.addEventListener('click', () => {
-                lenis.scrollTo(0);
-            });
-        }
-        // Contact Buttons Scroll Logic
-        document.querySelectorAll('#contact-us-trigger-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const section6 = document.getElementById('section-6-wrapper');
-                if (section6) {
-                    lenis.scrollTo(section6);
+            }, { passive: false, capture: true });
+
+            let touchStartY = 0;
+            let lastTouchY = 0;
+
+            window.addEventListener('touchstart', (e) => {
+                if (currentLockedSectionIndex === -1) return;
+                touchStartY = e.touches[0].clientY;
+                lastTouchY = touchStartY;
+            }, { passive: true });
+
+            window.addEventListener('touchmove', (e) => {
+                if (isSnapping) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
                 }
-            });
-        });
 
-        // --- Custom Scroll Lock & Cursor Logic (Desktop Only) ---
-        const scrollCursor = document.getElementById('custom-scroll-cursor');
-        const scrollProgress = document.getElementById('custom-scroll-progress');
-        const scrollArrow = document.getElementById('custom-scroll-arrow');
-        
-        let mouseX = window.innerWidth / 2;
-        let mouseY = window.innerHeight / 2;
-        
-        window.addEventListener('mousemove', (e) => {
-            if (window.innerWidth < 768) return;
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            scrollCursor.style.left = `${mouseX}px`;
-            scrollCursor.style.top = `${mouseY}px`;
-            scrollCursor.style.bottom = 'auto';
-            scrollCursor.style.transform = 'translate(-50%, -50%)';
-        });
+                // Mobile progress logic
+                if (currentLockedSectionIndex !== -1 && window.innerWidth < 768) {
+                    e.preventDefault(); // Stop native scroll
 
-        const lockedSections = Array.from(document.querySelectorAll('#hero-section, .section-wrapper')).filter(Boolean);
+                    if (isProcessingStep || lockCooldown) return;
 
-        let accumulatedScroll = 0;
-        const scrollThreshold = 900; // Amount of wheel delta to complete the circle
-        let isProcessingStep = false;
-        let cursorTimeout;
-        let lockCooldown = false;
-        
-        let currentLockedSectionIndex = -1;
-        let isSnapping = false;
+                    scrollCursor.style.opacity = '1';
+                    scrollCursor.style.left = '50%';
+                    scrollCursor.style.top = 'auto';
+                    scrollCursor.style.bottom = '40px';
+                    scrollCursor.style.transform = 'translate(-50%, 0)';
 
-        // 1. Desktop Robust Lock: Intersection Observer catches sections at 50%
-        const sectionObserver = new IntersectionObserver((entries) => {
-            if (window.innerWidth < 768) return; // Desktop ONLY
+                    clearTimeout(cursorTimeout);
 
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !isSnapping) {
-                    const idx = lockedSections.indexOf(entry.target);
-                    
-                    if (idx !== -1 && currentLockedSectionIndex !== idx) {
-                        isSnapping = true;
-                        
-                        lenis.start();
-                        lenis.scrollTo(entry.target, { duration: 0.8 });
-                        
+                    let currentY = e.touches[0].clientY;
+                    let deltaY = lastTouchY - currentY; // positive = scrolling down
+                    lastTouchY = currentY;
+
+                    // Amplify touch drag
+                    accumulatedScroll += deltaY * 2.5;
+
+                    // Clamp accumulation
+                    if (accumulatedScroll > scrollThreshold) accumulatedScroll = scrollThreshold;
+                    if (accumulatedScroll < -scrollThreshold) accumulatedScroll = -scrollThreshold;
+
+                    // Update SVG circle
+                    let percentage = Math.abs(accumulatedScroll) / scrollThreshold;
+                    let offset = 283 - (283 * Math.min(percentage, 1));
+                    scrollProgress.style.strokeDashoffset = offset;
+
+                    // Update Arrow Direction
+                    if (accumulatedScroll > 0) {
+                        scrollArrow.style.transform = 'rotate(0deg)'; // down
+                    } else {
+                        scrollArrow.style.transform = 'rotate(180deg)'; // up
+                    }
+
+                    // Trigger Step
+                    if (Math.abs(accumulatedScroll) >= scrollThreshold) {
+                        isProcessingStep = true;
+                        scrollCursor.style.opacity = '0';
+                        let direction = accumulatedScroll > 0 ? 1 : -1;
+                        accumulatedScroll = 0;
+                        scrollProgress.style.strokeDashoffset = 283;
+
+                        handleLockedStep(currentLockedSectionIndex, direction);
+
                         setTimeout(() => {
-                            currentLockedSectionIndex = idx;
-                            lenis.stop(); 
-                            accumulatedScroll = 0;
-                            isSnapping = false;
-                            
-                            const frame = document.getElementById('global-frame');
-                            if(frame) {
-                                frame.style.opacity = '1';
-                                frame.style.transform = 'scale(1)';
-                            }
-                        }, 900);
+                            isProcessingStep = false;
+                            lockCooldown = true;
+                            setTimeout(() => lockCooldown = false, 500);
+                        }, 800);
+                    }
+
+                    cursorTimeout = setTimeout(() => {
+                        scrollCursor.style.opacity = '0';
+                        // We DO NOT reset accumulatedScroll here, so progress is remembered!
+                    }, 500);
+                }
+            }, { passive: false, capture: true });
+
+            // Observe all lockable sections
+            lockedSections.forEach(sec => sectionObserver.observe(sec));
+
+            // 2. Accumulate Progress
+            window.addEventListener('wheel', (e) => {
+                if (window.innerWidth < 768) return; // Desktop only
+
+                if (currentLockedSectionIndex !== -1) {
+                    e.preventDefault(); // Stop native wheel behavior
+
+                    if (isProcessingStep || lockCooldown || isSnapping) return;
+
+                    scrollCursor.style.opacity = '1';
+                    clearTimeout(cursorTimeout);
+
+                    accumulatedScroll += e.deltaY;
+
+                    // Clamp accumulation
+                    if (accumulatedScroll > scrollThreshold) accumulatedScroll = scrollThreshold;
+                    if (accumulatedScroll < -scrollThreshold) accumulatedScroll = -scrollThreshold;
+
+                    // Update SVG circle
+                    let percentage = Math.abs(accumulatedScroll) / scrollThreshold;
+                    let offset = 283 - (283 * Math.min(percentage, 1));
+                    scrollProgress.style.strokeDashoffset = offset;
+
+                    // Update Arrow Direction
+                    if (accumulatedScroll > 0) {
+                        scrollArrow.style.transform = 'rotate(0deg)'; // down
+                    } else {
+                        scrollArrow.style.transform = 'rotate(180deg)'; // up
+                    }
+
+                    // Trigger Step when circle is complete
+                    if (Math.abs(accumulatedScroll) >= scrollThreshold) {
+                        isProcessingStep = true;
+                        scrollCursor.style.opacity = '0';
+                        let direction = accumulatedScroll > 0 ? 1 : -1;
+                        accumulatedScroll = 0;
+                        scrollProgress.style.strokeDashoffset = 283;
+
+                        handleLockedStep(currentLockedSectionIndex, direction);
+
+                        setTimeout(() => {
+                            isProcessingStep = false;
+                            lockCooldown = true;
+                            setTimeout(() => lockCooldown = false, 500); // Wait before next accumulation
+                        }, 800);
+                    }
+
+                    // Hide cursor if scrolling stops (but keep progress)
+                    cursorTimeout = setTimeout(() => {
+                        scrollCursor.style.opacity = '0';
+                    }, 500);
+                }
+            }, { passive: false });
+
+            // 3. Handle Navigation (Only Section to Section)
+            function handleLockedStep(sectionIdx, direction) {
+                currentLockedSectionIndex = -1; // Release Lock
+                lenis.start(); // 🟢 Re-enable scroll
+
+                if (direction > 0) {
+                    // Scroll Down -> Next Section
+                    if (sectionIdx < lockedSections.length - 1) {
+                        // Smoothly start scrolling to next section. The observer will catch it at 40% and snap!
+                        lenis.scrollTo(lockedSections[sectionIdx + 1], { duration: 1.0 });
+                    } else {
+                        // End of locked sections (e.g. at Section 3, going down to Section 4). Just push them down into normal scroll zone.
+                        lenis.scrollTo(window.scrollY + window.innerHeight * 0.8, { duration: 1.0 });
+                    }
+                } else {
+                    // Scroll Up -> Previous Section
+                    if (sectionIdx > 0) {
+                        lenis.scrollTo(lockedSections[sectionIdx - 1], { duration: 1.0 });
+                    } else {
+                        // Reached the very top, just release
                     }
                 }
+            }
+
+            // Global Staggered Animation Observer
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const items = entry.target.querySelectorAll('.stagger-item');
+                        items.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.classList.add('show');
+                                item.classList.remove('hide');
+                            }, index * 120);
+                        });
+                    } else {
+                        const items = entry.target.querySelectorAll('.stagger-item');
+                        items.forEach(item => {
+                            item.classList.remove('show');
+                            item.classList.add('hide');
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.section-wrapper, #hero-section').forEach(section => {
+                observer.observe(section);
             });
-        }, {
-            threshold: 0.5 
-        });
-
-        // 2. Mobile Natural Lock: Only locks when perfectly fit (within 40px)
-        lenis.on('scroll', () => {
-            if (window.innerWidth >= 768 || isSnapping) return; // Mobile ONLY
-            
-            lockedSections.forEach((sec, i) => {
-                if(!sec) return;
-                const rect = sec.getBoundingClientRect();
-                
-                // If they scroll naturally to a near-perfect fit
-                if (Math.abs(rect.top) < 40 && currentLockedSectionIndex !== i) {
-                    isSnapping = true;
-                    
-                    // Nudge it the last few pixels to be perfectly flush
-                    lenis.scrollTo(sec, { duration: 0.4 });
-                    
-                    setTimeout(() => {
-                        const finalRect = sec.getBoundingClientRect();
-                        // Strict check: Only lock if it truly fit perfectly
-                        if (Math.abs(finalRect.top) < 15) {
-                            currentLockedSectionIndex = i;
-                            lenis.stop(); 
-                            accumulatedScroll = 0;
-                            
-                            const frame = document.getElementById('global-frame');
-                            if(frame) {
-                                frame.style.opacity = '1';
-                                frame.style.transform = 'scale(1)';
-                            }
-                        }
-                        isSnapping = false;
-                    }, 450);
-                }
-            });
-        });
-
-        // CRITICAL INTERRUPT: Prevent Lenis from aborting the animation
-        // By using capture: true, we intercept the event BEFORE Lenis sees it
-        window.addEventListener('wheel', (e) => {
-            if (isSnapping) {
-                e.preventDefault();
-                e.stopPropagation(); // Hide event from Lenis!
-            }
-        }, { passive: false, capture: true });
-        
-        let touchStartY = 0;
-        let lastTouchY = 0;
-        
-        window.addEventListener('touchstart', (e) => {
-            if (currentLockedSectionIndex === -1) return;
-            touchStartY = e.touches[0].clientY;
-            lastTouchY = touchStartY;
-        }, { passive: true });
-
-        window.addEventListener('touchmove', (e) => {
-            if (isSnapping) {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-            }
-
-            // Mobile progress logic
-            if (currentLockedSectionIndex !== -1 && window.innerWidth < 768) {
-                e.preventDefault(); // Stop native scroll
-
-                if (isProcessingStep || lockCooldown) return;
-
-                scrollCursor.style.opacity = '1';
-                scrollCursor.style.left = '50%';
-                scrollCursor.style.top = 'auto';
-                scrollCursor.style.bottom = '40px';
-                scrollCursor.style.transform = 'translate(-50%, 0)';
-                
-                clearTimeout(cursorTimeout);
-
-                let currentY = e.touches[0].clientY;
-                let deltaY = lastTouchY - currentY; // positive = scrolling down
-                lastTouchY = currentY;
-
-                // Amplify touch drag
-                accumulatedScroll += deltaY * 2.5;
-
-                // Clamp accumulation
-                if (accumulatedScroll > scrollThreshold) accumulatedScroll = scrollThreshold;
-                if (accumulatedScroll < -scrollThreshold) accumulatedScroll = -scrollThreshold;
-
-                // Update SVG circle
-                let percentage = Math.abs(accumulatedScroll) / scrollThreshold;
-                let offset = 283 - (283 * Math.min(percentage, 1));
-                scrollProgress.style.strokeDashoffset = offset;
-
-                // Update Arrow Direction
-                if (accumulatedScroll > 0) {
-                    scrollArrow.style.transform = 'rotate(0deg)'; // down
-                } else {
-                    scrollArrow.style.transform = 'rotate(180deg)'; // up
-                }
-
-                // Trigger Step
-                if (Math.abs(accumulatedScroll) >= scrollThreshold) {
-                    isProcessingStep = true;
-                    scrollCursor.style.opacity = '0';
-                    let direction = accumulatedScroll > 0 ? 1 : -1;
-                    accumulatedScroll = 0;
-                    scrollProgress.style.strokeDashoffset = 283;
-                    
-                    handleLockedStep(currentLockedSectionIndex, direction);
-
-                    setTimeout(() => {
-                        isProcessingStep = false;
-                        lockCooldown = true;
-                        setTimeout(() => lockCooldown = false, 500); 
-                    }, 800);
-                }
-
-                cursorTimeout = setTimeout(() => {
-                    scrollCursor.style.opacity = '0';
-                    // We DO NOT reset accumulatedScroll here, so progress is remembered!
-                }, 500);
-            }
-        }, { passive: false, capture: true });
-
-        // Observe all lockable sections
-        lockedSections.forEach(sec => sectionObserver.observe(sec));
-
-        // 2. Accumulate Progress
-        window.addEventListener('wheel', (e) => {
-            if (window.innerWidth < 768) return; // Desktop only
-
-            if (currentLockedSectionIndex !== -1) {
-                e.preventDefault(); // Stop native wheel behavior
-
-                if (isProcessingStep || lockCooldown || isSnapping) return;
-
-                scrollCursor.style.opacity = '1';
-                clearTimeout(cursorTimeout);
-
-                accumulatedScroll += e.deltaY;
-
-                // Clamp accumulation
-                if (accumulatedScroll > scrollThreshold) accumulatedScroll = scrollThreshold;
-                if (accumulatedScroll < -scrollThreshold) accumulatedScroll = -scrollThreshold;
-
-                // Update SVG circle
-                let percentage = Math.abs(accumulatedScroll) / scrollThreshold;
-                let offset = 283 - (283 * Math.min(percentage, 1));
-                scrollProgress.style.strokeDashoffset = offset;
-
-                // Update Arrow Direction
-                if (accumulatedScroll > 0) {
-                    scrollArrow.style.transform = 'rotate(0deg)'; // down
-                } else {
-                    scrollArrow.style.transform = 'rotate(180deg)'; // up
-                }
-
-                // Trigger Step when circle is complete
-                if (Math.abs(accumulatedScroll) >= scrollThreshold) {
-                    isProcessingStep = true;
-                    scrollCursor.style.opacity = '0';
-                    let direction = accumulatedScroll > 0 ? 1 : -1;
-                    accumulatedScroll = 0;
-                    scrollProgress.style.strokeDashoffset = 283;
-                    
-                    handleLockedStep(currentLockedSectionIndex, direction);
-
-                    setTimeout(() => {
-                        isProcessingStep = false;
-                        lockCooldown = true;
-                        setTimeout(() => lockCooldown = false, 500); // Wait before next accumulation
-                    }, 800);
-                }
-
-                // Hide cursor if scrolling stops (but keep progress)
-                cursorTimeout = setTimeout(() => {
-                    scrollCursor.style.opacity = '0';
-                }, 500);
-            }
-        }, { passive: false });
-
-        // 3. Handle Navigation (Only Section to Section)
-        function handleLockedStep(sectionIdx, direction) {
-            currentLockedSectionIndex = -1; // Release Lock
-            lenis.start(); // 🟢 Re-enable scroll
-            
-            if (direction > 0) {
-                // Scroll Down -> Next Section
-                if (sectionIdx < lockedSections.length - 1) {
-                    // Smoothly start scrolling to next section. The observer will catch it at 40% and snap!
-                    lenis.scrollTo(lockedSections[sectionIdx + 1], { duration: 1.0 });
-                } else {
-                    // End of locked sections (e.g. at Section 3, going down to Section 4). Just push them down into normal scroll zone.
-                    lenis.scrollTo(window.scrollY + window.innerHeight * 0.8, { duration: 1.0 });
-                }
-            } else {
-                // Scroll Up -> Previous Section
-                if (sectionIdx > 0) {
-                    lenis.scrollTo(lockedSections[sectionIdx - 1], { duration: 1.0 });
-                } else {
-                    // Reached the very top, just release
-                }
-            }
-        }
-
-        // Global Staggered Animation Observer
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const items = entry.target.querySelectorAll('.stagger-item');
-                    items.forEach((item, index) => {
-                        setTimeout(() => {
-                            item.classList.add('show');
-                            item.classList.remove('hide');
-                        }, index * 120);
-                    });
-                } else {
-                    const items = entry.target.querySelectorAll('.stagger-item');
-                    items.forEach(item => {
-                        item.classList.remove('show');
-                        item.classList.add('hide');
-                    });
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.section-wrapper, #hero-section').forEach(section => {
-            observer.observe(section);
-        });
-    </script>
+        </script>
 </body>
 
 </html>
