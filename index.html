@@ -125,7 +125,7 @@
             color: black;
             mix-blend-mode: screen;
             display: inline-block;
-            padding: 0.25em 0.5em;
+            padding: 0.25em 0.5em 0.25em 0;
             font-weight: 900;
             line-height: 1;
             transition: background-color 0.4s ease, color 0.4s ease;
@@ -299,6 +299,77 @@
             opacity: 0;
             transform: translateY(20px);
         }
+
+        @keyframes fadeInBlur {
+            from {
+                opacity: 0;
+                filter: blur(12px);
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                filter: blur(0);
+                transform: translateY(0);
+            }
+        }
+
+        .word-stagger {
+            opacity: 0;
+            display: inline-block;
+            margin-right: 0.2em;
+        }
+
+        .show .word-stagger {
+            animation: fadeInBlur 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+
+            .no-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            .logo-card {
+                background: rgba(255, 255, 255, 0.08);
+                backdrop-filter: blur(30px);
+                -webkit-backdrop-filter: blur(30px);
+                border-radius: 1.8rem;
+                padding: 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 115px;
+                height: 115px;
+                border: 1px solid rgba(255, 255, 255, 0.15);
+            }
+
+            .vertical-text-strip {
+                background: white;
+                color: black;
+                writing-mode: vertical-rl;
+                text-orientation: mixed;
+                padding: 1.5rem 1rem;
+                font-size: 10px;
+                font-weight: 900;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                height: 115px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: -5px 0 25px rgba(0, 0, 0, 0.4);
+                flex-shrink: 0;
+                position: absolute;
+                right: 0;
+                z-index: 20;
+            }
+        }
     </style>
 </head>
 
@@ -307,18 +378,26 @@
     <div id="global-frame"></div>
 
     <nav
-        class="fixed top-0 w-full p-12 pl-16 flex justify-between items-center z-[100] fade-in-down pointer-events-auto">
+        class="fixed top-0 w-full p-6 md:p-12 md:pl-16 flex justify-between items-center z-[100] fade-in-down pointer-events-auto">
         <!-- Logo -->
         <a href="#" class="z-50 flex items-center gap-3 transition-opacity hover:opacity-80">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 143 40" height="28" width="100">
                 <g clip-path="url(#clip0_36_970)">
-                    <path fill="white" d="M19.5265 39.9999L0 20.4768L0.829961 8.52332L12.7835 7.69336L32.3099 27.2198L31.48 39.1733L19.5265 39.9999ZM1.6186 19.8707L20.1326 38.3847L30.0095 37.6994L30.6948 27.8225L12.1774 9.30851L2.30392 9.99383L1.6186 19.8707Z"></path>
-                    <path fill="white" d="M12.7835 32.3099L0.829961 31.48L0 19.5265L19.5265 0L31.48 0.829961L32.3099 12.7835L12.7835 32.3099ZM2.30392 30.006L12.1808 30.6913L30.6948 12.1774L30.006 2.30392L20.1326 1.6186L1.6186 20.1326L2.30392 30.006Z"></path>
-                    <path fill="white" d="M43.4453 12.8975H45.7527V22.8949L60.8917 12.8975L64.9795 12.9388L57.9163 17.5742C56.9313 18.2216 55.9016 18.8966 54.8306 19.5991C53.7596 20.3017 52.692 21.0008 51.6313 21.693C50.5706 22.3886 49.5409 23.0671 48.5353 23.7283C47.5297 24.3895 46.6033 24.9956 45.7527 25.5501L43.4453 27.0481V12.8975ZM53.2946 19.0653L55.2163 17.7705L57.286 19.7989C58.3502 20.7184 59.2731 21.507 60.048 22.1682C60.8228 22.8294 61.5254 23.4321 62.1522 23.9797C62.7789 24.5272 63.3747 25.0404 63.9326 25.5191C64.494 25.9978 65.0897 26.5143 65.7234 27.0688H62.283L58.822 24.0933C58.3915 23.7145 57.9645 23.346 57.5478 22.981C57.1311 22.6159 56.7591 22.2991 56.4354 22.0305C56.06 21.6999 53.6459 19.3477 53.2946 19.0653Z"></path>
+                    <path fill="white"
+                        d="M19.5265 39.9999L0 20.4768L0.829961 8.52332L12.7835 7.69336L32.3099 27.2198L31.48 39.1733L19.5265 39.9999ZM1.6186 19.8707L20.1326 38.3847L30.0095 37.6994L30.6948 27.8225L12.1774 9.30851L2.30392 9.99383L1.6186 19.8707Z">
+                    </path>
+                    <path fill="white"
+                        d="M12.7835 32.3099L0.829961 31.48L0 19.5265L19.5265 0L31.48 0.829961L32.3099 12.7835L12.7835 32.3099ZM2.30392 30.006L12.1808 30.6913L30.6948 12.1774L30.006 2.30392L20.1326 1.6186L1.6186 20.1326L2.30392 30.006Z">
+                    </path>
+                    <path fill="white"
+                        d="M43.4453 12.8975H45.7527V22.8949L60.8917 12.8975L64.9795 12.9388L57.9163 17.5742C56.9313 18.2216 55.9016 18.8966 54.8306 19.5991C53.7596 20.3017 52.692 21.0008 51.6313 21.693C50.5706 22.3886 49.5409 23.0671 48.5353 23.7283C47.5297 24.3895 46.6033 24.9956 45.7527 25.5501L43.4453 27.0481V12.8975ZM53.2946 19.0653L55.2163 17.7705L57.286 19.7989C58.3502 20.7184 59.2731 21.507 60.048 22.1682C60.8228 22.8294 61.5254 23.4321 62.1522 23.9797C62.7789 24.5272 63.3747 25.0404 63.9326 25.5191C64.494 25.9978 65.0897 26.5143 65.7234 27.0688H62.283L58.822 24.0933C58.3915 23.7145 57.9645 23.346 57.5478 22.981C57.1311 22.6159 56.7591 22.2991 56.4354 22.0305C56.06 21.6999 53.6459 19.3477 53.2946 19.0653Z">
+                    </path>
                     <path fill="white" d="M72.0059 27.0859V12.918H74.3339V27.0859H72.0059Z"></path>
                     <path fill="white" d="M102.222 24.8784V27.0859H81.6172V12.918H83.9245V24.8784H102.222Z"></path>
                     <path fill="white" d="M108.699 27.0859V12.918H111.027V27.0859H108.699Z"></path>
-                    <path fill="white" d="M125.092 12.918H142.904V15.1255H125.092C124.376 15.1255 123.711 15.2529 123.098 15.5112C122.485 15.7695 121.948 16.1207 121.49 16.565C121.032 17.0127 120.67 17.5292 120.408 18.1181C120.147 18.707 120.012 19.3304 120.012 19.995V20.0157C120.012 20.6907 120.147 21.3278 120.419 21.9236C120.687 22.5193 121.056 23.0359 121.521 23.4767C121.986 23.9175 122.526 24.2654 123.139 24.5202C123.752 24.7785 124.403 24.9059 125.092 24.9059H140.596V21.1349H136.488L134.969 18.9274H142.904V27.1031H125.092C124.121 27.1031 123.191 26.924 122.299 26.5658C121.407 26.2077 120.622 25.7083 119.94 25.0678C119.258 24.4272 118.714 23.673 118.311 22.8121C117.905 21.9477 117.705 21.011 117.705 19.9985C117.705 18.9998 117.908 18.0699 118.311 17.2055C118.718 16.3411 119.258 15.5938 119.94 14.9602C120.622 14.3265 121.407 13.8271 122.299 13.4621C123.191 13.1005 124.121 12.918 125.092 12.918Z"></path>
+                    <path fill="white"
+                        d="M125.092 12.918H142.904V15.1255H125.092C124.376 15.1255 123.711 15.2529 123.098 15.5112C122.485 15.7695 121.948 16.1207 121.49 16.565C121.032 17.0127 120.67 17.5292 120.408 18.1181C120.147 18.707 120.012 19.3304 120.012 19.995V20.0157C120.012 20.6907 120.147 21.3278 120.419 21.9236C120.687 22.5193 121.056 23.0359 121.521 23.4767C121.986 23.9175 122.526 24.2654 123.139 24.5202C123.752 24.7785 124.403 24.9059 125.092 24.9059H140.596V21.1349H136.488L134.969 18.9274H142.904V27.1031H125.092C124.121 27.1031 123.191 26.924 122.299 26.5658C121.407 26.2077 120.622 25.7083 119.94 25.0678C119.258 24.4272 118.714 23.673 118.311 22.8121C117.905 21.9477 117.705 21.011 117.705 19.9985C117.705 18.9998 117.908 18.0699 118.311 17.2055C118.718 16.3411 119.258 15.5938 119.94 14.9602C120.622 14.3265 121.407 13.8271 122.299 13.4621C123.191 13.1005 124.121 12.918 125.092 12.918Z">
+                    </path>
                 </g>
                 <defs>
                     <clipPath id="clip0_36_970">
@@ -340,10 +419,30 @@
             </ul>
         </div>
 
-        <a href="#"
-            class="bg-[#cba07c] hover:bg-[#d8ae8a] text-white px-7 py-3 rounded-full text-[11px] font-bold tracking-widest hover-lift">
-            BESTELLEN
-        </a>
+        <div class="flex items-center gap-3">
+            <a href="#"
+                class="hidden md:block bg-[#cba07c] hover:bg-[#d8ae8a] text-white px-7 py-3 rounded-full text-[11px] font-bold tracking-widest hover-lift">
+                BESTELLEN
+            </a>
+
+            <!-- Mobile Navigation Controls -->
+            <div class="flex lg:hidden items-center gap-2">
+                <a href="#"
+                    class="bg-[#cba07c] text-white px-5 py-2.5 rounded-full text-[10px] font-black tracking-widest uppercase shadow-lg">
+                    BESTELLEN
+                </a>
+                <div
+                    class="bg-[#2a2a2a]/60 backdrop-blur-xl border border-white/10 rounded-full px-4 py-2.5 flex items-center gap-3 shadow-2xl">
+                    <span class="text-[10px] font-black tracking-widest text-white">START</span>
+                    <div class="w-px h-3 bg-white/20"></div>
+                    <div class="flex flex-col gap-1">
+                        <div class="w-4 h-0.5 bg-white"></div>
+                        <div class="w-4 h-0.5 bg-white"></div>
+                        <div class="w-2 h-0.5 bg-white"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </nav>
 
     <!-- Section 1: Hero -->
@@ -353,20 +452,33 @@
             <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2070"
                 class="w-full h-full object-cover opacity-80" alt="Restaurant Interior">
         </div>
-
-        <main class="flex-1 flex items-start pt-52 pl-6 w-full">
+        <main
+            class="flex-1 flex flex-col md:flex-row items-start pt-64 md:pt-52 px-4 md:pl-6 w-full text-left md:text-left">
             <div class="max-w-4xl w-full">
+                <!-- Mobile Only Video Button -->
+                <div class="flex justify-start md:hidden mb-12 pl-4">
+                    <button
+                        class="flex items-center gap-4 bg-[#2a3441]/60 backdrop-blur-md border border-white/10 text-white px-5 py-3.5 rounded-full text-[10px] font-black tracking-widest transition-all duration-300 shadow-2xl">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                        VIDEO ANSEHEN
+                    </button>
+                </div>
+
                 <h1
-                    class="text-5xl md:text-[4rem] font-black uppercase tracking-tighter flex flex-col items-start mb-8 leading-[0.85]">
+                    class="text-[2.6rem] md:text-[4rem] font-black uppercase tracking-tighter flex flex-col items-start mb-8 leading-[0.9]">
                     <span class="text-block stagger-item">SERVICEKRÄFTE</span>
                     <span class="text-block stagger-item">STÄRKEN</span>
                 </h1>
                 <p
-                    class="text-base md:text-[1.1rem] text-white mb-10 leading-tight stagger-item max-w-2xl font-medium pl-10">
-                    Intelligentes Kellnerruf-System zur Verbesserung der Servicequalität,<br>
-                    Optimierung des Umsatzes und Entschärfung des Personalmangels
+                    class="text-sm md:text-[1.1rem] text-white/90 mb-10 leading-relaxed md:leading-tight max-w-2xl font-medium md:pl-10 text-left pl-4">
+                    <span class="stagger-item block mb-1">Intelligentes Kellnerruf-System zur</span>
+                    <span class="stagger-item block mb-1">Verbesserung der Servicequalität,</span>
+                    <span class="stagger-item block mb-1">Optimierung des Umsatzes und</span>
+                    <span class="stagger-item block">Entschärfung des Personalmangels</span>
                 </p>
-                <div class="pl-10">
+                <div class="md:pl-10 hidden md:block">
                     <button
                         class="flex items-center gap-4 bg-[#2a3441]/80 hover:bg-[#344050]/90 backdrop-blur-md border border-white/10 text-white px-6 py-4 rounded-full text-xs font-semibold tracking-widest transition-all duration-300 fade-in-left delay-500 hover-lift">
                         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -377,6 +489,7 @@
                 </div>
             </div>
 
+            <!-- Desktop Logos -->
             <div class="absolute bottom-12 right-6 flex flex-col items-end hidden lg:flex">
                 <div
                     class="bg-white text-black text-[10px] font-black py-2 px-6 mb-6 tracking-[0.1em] uppercase fade-in-right delay-700">
@@ -387,7 +500,8 @@
                     <div class="text-white text-2xl font-black logo-item">METRO</div>
                     <div class="text-white text-xl font-black italic logo-item">VELTINS</div>
                     <div class="text-white text-lg font-serif logo-item">Marriott</div>
-                    <div class="text-white text-[10px] font-black tracking-[0.15em] logo-item flex flex-col items-end gap-2 mt-2">
+                    <div
+                        class="text-white text-[10px] font-black tracking-[0.15em] logo-item flex flex-col items-end gap-2 mt-2">
                         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                             <path d="M12 3l10 8-1.5 1.5L12 6 3.5 12.5 2 11l10-8z" />
                             <path d="M6 13v7h4v-4h4v-4h4v-7l-6-4.5L6 13z" />
@@ -396,10 +510,33 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Mobile Logo Row -->
+            <div class="lg:hidden absolute bottom-28 left-0 w-full px-6 flex items-end">
+                <div class="flex-1 flex gap-2 overflow-x-auto no-scrollbar pr-4">
+                    <div class="flex gap-2 items-center">
+                        <div class="logo-card">
+                            <div class="text-white text-sm font-serif">Hilton</div>
+                        </div>
+                        <div class="logo-card">
+                            <div class="text-white text-base font-black">METRO</div>
+                        </div>
+                        <div class="logo-card">
+                            <div class="text-white text-sm font-black italic">VELTINS</div>
+                        </div>
+                        <div class="logo-card">
+                            <div class="text-white text-[10px] font-serif">Marriott</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="vertical-text-strip">
+                    UNS VERTRAUEN
+                </div>
+            </div>
         </main>
 
         <div
-            class="absolute bottom-12 left-16 flex items-center gap-4 cursor-pointer group fade-in-left delay-700 z-10">
+            class="absolute bottom-8 left-8 md:left-16 flex items-center gap-4 cursor-pointer group fade-in-left delay-700 z-30">
             <div
                 class="w-10 h-10 rounded-full border border-white flex items-center justify-center group-hover:bg-white transition-all duration-300">
                 <svg class="w-4 h-4 text-white group-hover:text-black transition-colors" fill="none"
@@ -407,7 +544,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
             </div>
-            <span class="text-white text-[14px] font-medium tracking-normal uppercase">FÄLLE ANSEHEN</span>
+            <span class="text-white text-[12px] md:text-[14px] font-medium tracking-normal uppercase">FÄLLE
+                ANSEHEN</span>
         </div>
     </div>
 
@@ -424,53 +562,105 @@
             <div class="absolute inset-0 bg-black/40"></div>
         </div>
 
-        <div class="relative h-full flex items-center px-6 w-full pt-48 section-content">
-            <div class="flex flex-col md:flex-row w-full justify-between items-center gap-10">
-                <div class="max-w-sm fade-in-left">
-                    <div class="bg-white p-10 shadow-2xl">
-                        <p class="text-black text-base leading-relaxed font-medium transition-opacity duration-500"
-                            id="section-2-info-text">
-                            Gäste sind bereit zu bestellen - aber kein Kellner in Sicht. Dieses klassische Szenario kann
-                            selbst mit dem besten Servicepersonal passieren. Besonders wenn Gäste dann ihre Meinung
-                            ändern, geht Umsatz verloren.
-                        </p>
-                    </div>
-                    <div class="flex mt-0 cursor-pointer group/btn" id="cta-slide-btn">
-                        <div
-                            class="bg-white text-[#b48c5a] px-8 py-5 text-[11px] font-bold uppercase tracking-[0.2em] border-t border-gray-50 flex-1 flex items-center">
-                            So hilft Ordercube
+        <div
+            class="relative h-full flex flex-col md:flex-row items-start pl-4 md:pl-0 pr-0 w-full pt-24 md:pt-64 section-content">
+            <div
+                class="flex flex-col md:flex-row w-full h-full md:h-auto justify-between items-start md:items-center gap-6 md:gap-10">
+                <!-- Mobile & Desktop Content Wrapper -->
+                <div class="max-w-sm fade-in-left pt-24 md:pt-0 w-full flex flex-col h-full md:h-auto">
+                    <!-- Mobile Only: Top Group -->
+                    <div class="md:hidden mb-8">
+                        <div class="bg-white text-black text-[11px] font-black w-fit px-4 py-2 mb-6 stagger-item"
+                            id="section-2-pagination">
+                            1 / 5
                         </div>
-                        <div
-                            class="bg-[#b48c5a] text-white w-16 flex items-center justify-center group-hover/btn:bg-[#9a764a] transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
+                        <h2 class="text-3xl font-black uppercase leading-[0.9] flex flex-col items-start stagger-item">
+                            <span class="text-block" id="section-2-title-mobile">BESTELLWUNSCH</span>
+                        </h2>
+                    </div>
+
+                    <!-- Common Info Text (Desktop has different layout, handled in JS) -->
+                    <div class="flex-1 md:flex-none">
+                        <!-- Desktop Only Heading (Already in stack) -->
+                        <div class="hidden md:block bg-white p-10 shadow-2xl mb-8">
+                            <p class="text-black text-base leading-relaxed font-medium transition-opacity duration-500"
+                                id="section-2-info-text-desktop">
+                                Gäste sind bereit zu bestellen - aber kein Kellner in Sicht. Dieses klassische Szenario
+                                kann selbst mit dem besten Servicepersonal passieren. Besonders wenn Gäste dann ihre
+                                Meinung ändern, geht Umsatz verloren.
+                            </p>
+                        </div>
+
+                        <!-- Mobile Only Paragraph (Word Animation) -->
+                        <div class="md:hidden pl-4 pr-4">
+                            <p class="text-white text-lg leading-relaxed font-medium stagger-item"
+                                id="section-2-info-text">
+                                <span class="word-stagger" style="animation-delay: 0.1s">Gäste</span>
+                                <span class="word-stagger" style="animation-delay: 0.15s">sind</span>
+                                <span class="word-stagger" style="animation-delay: 0.2s">bereit</span>
+                                <span class="word-stagger" style="animation-delay: 0.25s">zu</span>
+                                <span class="word-stagger" style="animation-delay: 0.3s">bestellen...</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Buttons (Mobile Focus) -->
+                    <div class="space-y-10 mb-12 md:mb-0">
+                        <div class="flex items-stretch cursor-pointer group/cta stagger-item" id="cta-slide-btn">
+                            <div
+                                class="bg-white text-[#b48c5a] px-8 py-5 text-[12px] font-black uppercase tracking-widest  flex items-center shadow-2xl">
+                                So hilft Ordercube
+                            </div>
+                            <div
+                                class="bg-[#b48c5a] text-white w-16 flex items-center justify-center group-hover/cta:bg-[#9a764a] transition-colors shadow-2xl">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M9 5l7 7-7 7" stroke-width="3" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Mobile Only: Next Button -->
+                        <div class="md:hidden flex items-center gap-4 cursor-pointer group stagger-item"
+                            id="next-slide-btn-mobile">
+                            <div
+                                class="w-10 h-10 rounded-full border border-white flex items-center justify-center group-hover:bg-white transition-all duration-300">
+                                <svg class="w-4 h-4 text-white group-hover:text-black transition-colors" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M9 5l7 7-7 7" stroke-width="3" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <span class="text-white text-[12px] font-black tracking-widest uppercase">WEITER</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex flex-col items-end text-right pr-0 gap-0 leading-[0.85]" id="headline-stack">
-                    <div class="hover-text-block is-active text-4xl md:text-[3rem] cursor-pointer fade-in-right delay-100"
+                <!-- Desktop Only: Headline Stack -->
+                <div class="hidden md:flex flex-col items-end text-right pr-0 gap-0 leading-[0.85] w-1/2"
+                    id="headline-stack">
+                    <div class="hover-text-block is-active text-3xl md:text-[3rem] cursor-pointer fade-in-right delay-100"
                         data-index="0">BESTELLWUNSCH</div>
-                    <div class="hover-text-block text-4xl md:text-[3rem] cursor-pointer fade-in-right delay-200"
+                    <div class="hover-text-block text-3xl md:text-[3rem] cursor-pointer fade-in-right delay-200"
                         data-index="1">GETRÄNK ANFORDERN</div>
-                    <div class="hover-text-block text-4xl md:text-[3rem] cursor-pointer fade-in-right delay-300"
+                    <div class="hover-text-block text-3xl md:text-[3rem] cursor-pointer fade-in-right delay-300"
                         data-index="2">BEREIT ZU ZAHLEN</div>
-                    <div class="hover-text-block text-4xl md:text-[3rem] cursor-pointer fade-in-right delay-400"
+                    <div class="hover-text-block text-3xl md:text-[3rem] cursor-pointer fade-in-right delay-400"
                         data-index="3">UNÜBERSICHTLICH</div>
-                    <div class="hover-text-block text-4xl md:text-[3rem] cursor-pointer fade-in-right delay-500"
+                    <div class="hover-text-block text-3xl md:text-[3rem] cursor-pointer fade-in-right delay-500"
                         data-index="4">PERSONALMANGEL</div>
                 </div>
             </div>
         </div>
 
-        <div class="absolute bottom-12 left-16 flex items-center gap-4 cursor-pointer group z-30" id="next-slide-btn">
+        <!-- Desktop Only: Bottom Nav -->
+        <div class="hidden md:flex absolute bottom-12 left-16 flex items-center gap-4 cursor-pointer group z-30"
+            id="next-slide-btn">
             <div
                 class="w-10 h-10 rounded-full border border-white flex items-center justify-center group-hover:bg-white transition-all duration-300">
                 <svg class="w-4 h-4 text-white group-hover:text-black transition-colors" fill="none"
                     stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M9 5l7 7-7 7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </div>
             <span class="text-white text-[14px] font-medium tracking-normal uppercase">NÄCHSTER FALL</span>
@@ -490,10 +680,10 @@
 
         </div>
 
-        <div class="relative h-full flex flex-col justify-between px-16 py-32 z-10">
-            <div class="flex flex-row w-full justify-between items-center">
+        <div class="relative h-full flex flex-col justify-between px-4 md:px-16 py-24 md:py-32 z-10">
+            <div class="flex flex-col md:flex-row w-full justify-between items-start md:items-center gap-12">
                 <!-- Left Sidebar Features -->
-                <div class="flex flex-col gap-6 fade-in-left delay-400" id="feature-stack">
+                <div class="flex flex-col gap-4 md:gap-6 fade-in-left delay-400 w-full md:w-auto" id="feature-stack">
                     <div class="flex items-center gap-4 cursor-pointer group/feat slide-feature" data-index="0">
                         <div
                             class="w-6 h-6 flex items-center justify-center opacity-60 group-hover/feat:opacity-100 transition-opacity">
@@ -567,13 +757,14 @@
                 </div>
 
                 <!-- Right Side Info Box -->
-                <div class="max-w-sm fade-in-right delay-400">
+                <div class="max-w-sm fade-in-right delay-400 text-center md:text-left">
                     <div class="mb-6">
-                        <p class="text-[#cba07c] text-xl italic font-serif" id="feature-title">"Überblick auf einen
+                        <p class="text-[#cba07c] text-lg md:text-xl italic font-serif" id="feature-title">"Überblick auf
+                            einen
                             Blick"</p>
                     </div>
-                    <div class="bg-white p-10 shadow-2xl">
-                        <p class="text-black text-sm leading-relaxed font-medium" id="feature-desc">
+                    <div class="bg-white p-8 md:p-10 shadow-2xl">
+                        <p class="text-black text-xs md:text-sm leading-relaxed font-medium" id="feature-desc">
                             Echtzeit-Überblick über Ihr Restaurant-Layout: Sehen Sie auf einen Blick, welche Tische
                             Service benötigen, besetzt oder frei sind. Der interaktive Grundriss hilft, Sitzordnungen zu
                             optimieren und steigert die Serviceeffizienz.
@@ -582,8 +773,9 @@
                 </div>
             </div>
 
-            <div class="flex items-center justify-between w-full">
-                <div class="flex items-center gap-4 cursor-pointer group z-30" id="next-feature-btn">
+            <div class="flex flex-col md:flex-row items-center justify-between w-full gap-8">
+                <div class="absolute bottom-8 left-8 md:static flex items-center gap-4 cursor-pointer group z-30"
+                    id="next-feature-btn">
                     <div
                         class="w-10 h-10 rounded-full border border-white flex items-center justify-center group-hover:bg-white transition-all duration-300">
                         <svg class="w-4 h-4 text-white group-hover:text-black transition-colors" fill="none"
@@ -701,8 +893,9 @@
             </div>
 
             <!-- Bottom Navigation -->
-            <div class="px-16 pb-12">
-                <div class="flex items-center gap-4 cursor-pointer group z-30" id="discover-effect-btn">
+            <div class="px-8 md:px-16 pb-12">
+                <div class="absolute bottom-8 left-8 md:static flex items-center gap-4 cursor-pointer group z-30"
+                    id="discover-effect-btn">
                     <div
                         class="w-10 h-10 rounded-full border border-white flex items-center justify-center group-hover:bg-white transition-all duration-300">
                         <svg class="w-4 h-4 text-white group-hover:text-black transition-colors" fill="none"
@@ -736,7 +929,8 @@
                 <div class="flex-1 w-full max-w-4xl mx-auto">
                     <div class="border-t border-white/10">
                         <!-- Item 1 -->
-                        <div class="faq-item stagger-item border-b border-white/10 overflow-hidden transition-all duration-500">
+                        <div
+                            class="faq-item stagger-item border-b border-white/10 overflow-hidden transition-all duration-500">
                             <div class="flex items-center justify-between py-6 cursor-pointer group px-4 faq-trigger">
                                 <div class="flex gap-6 items-center">
                                     <span class="text-white font-bold text-lg">Q:</span>
@@ -762,7 +956,8 @@
                             </div>
                         </div>
                         <!-- Item 2 -->
-                        <div class="faq-item stagger-item border-b border-white/10 overflow-hidden transition-all duration-500">
+                        <div
+                            class="faq-item stagger-item border-b border-white/10 overflow-hidden transition-all duration-500">
                             <div class="flex items-center justify-between py-6 cursor-pointer group px-4 faq-trigger">
                                 <div class="flex gap-6 items-center">
                                     <span class="text-white font-bold text-lg">Q:</span>
@@ -788,7 +983,8 @@
                             </div>
                         </div>
                         <!-- Item 3 -->
-                        <div class="faq-item stagger-item border-b border-white/10 overflow-hidden transition-all duration-500">
+                        <div
+                            class="faq-item stagger-item border-b border-white/10 overflow-hidden transition-all duration-500">
                             <div class="flex items-center justify-between py-6 cursor-pointer group px-4 faq-trigger">
                                 <div class="flex gap-6 items-center">
                                     <span class="text-white font-bold text-lg">Q:</span>
@@ -813,7 +1009,8 @@
                             </div>
                         </div>
                         <!-- Item 4 -->
-                        <div class="faq-item stagger-item border-b border-white/10 overflow-hidden transition-all duration-500">
+                        <div
+                            class="faq-item stagger-item border-b border-white/10 overflow-hidden transition-all duration-500">
                             <div class="flex items-center justify-between py-6 cursor-pointer group px-4 faq-trigger">
                                 <div class="flex gap-6 items-center">
                                     <span class="text-white font-bold text-lg">Q:</span>
@@ -1034,7 +1231,8 @@
     </div>
 
     <!-- Section 7: Detailed Footer -->
-    <div class="section-wrapper bg-white relative overflow-hidden" id="section-7-wrapper" style="height: auto; min-height: 100vh;">
+    <div class="section-wrapper bg-white relative overflow-hidden" id="section-7-wrapper"
+        style="height: auto; min-height: 100vh;">
         <div class="h-full flex flex-col z-10 px-16 pt-20">
             <!-- Top Footer Bar -->
             <div class="flex justify-between items-center pb-12 border-b border-gray-100 mb-16">
@@ -1045,7 +1243,11 @@
                     <span class="text-black font-bold tracking-[0.2em] text-sm">ORDERCUBE</span>
                 </div>
                 <div class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke-width="2"/></svg>
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                            stroke-width="2" />
+                    </svg>
                     <span class="text-black font-bold text-lg">+49 89 9545 701 20</span>
                 </div>
             </div>
@@ -1057,10 +1259,14 @@
                     <h4 class="text-black font-bold uppercase tracking-widest text-sm">Ordercube GmbH</h4>
                     <div class="space-y-6">
                         <p class="text-gray-500 text-[14px] leading-relaxed">
-                            Ordercube ist ein Hardware- und SaaS-Unternehmen aus Grafing b. München, Bayern, Deutschland. Es ist unsere Vision, das Restauranterlebnis für Gäste, Kellner und Gastronomen nachhaltig zu verbessern.
+                            Ordercube ist ein Hardware- und SaaS-Unternehmen aus Grafing b. München, Bayern,
+                            Deutschland. Es ist unsere Vision, das Restauranterlebnis für Gäste, Kellner und Gastronomen
+                            nachhaltig zu verbessern.
                         </p>
                         <p class="text-gray-500 text-[14px] leading-relaxed">
-                            Seit der Gründung 2016 konnten wir große Gastronomie- und Hotelbetriebe wie METRO AG, NH Hotels und weitere als vertrauensvolle Kunden gewinnen. Mittlerweile sind wir in 18 Ländern weltweit vertreten.
+                            Seit der Gründung 2016 konnten wir große Gastronomie- und Hotelbetriebe wie METRO AG, NH
+                            Hotels und weitere als vertrauensvolle Kunden gewinnen. Mittlerweile sind wir in 18 Ländern
+                            weltweit vertreten.
                         </p>
                     </div>
                 </div>
@@ -1069,9 +1275,15 @@
                 <div class="space-y-8">
                     <h4 class="text-black font-bold uppercase tracking-widest text-sm">Produkt</h4>
                     <ul class="space-y-4">
-                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Fälle</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Features</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Wirkung</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Fälle</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Features</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Wirkung</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -1079,10 +1291,18 @@
                 <div class="space-y-8">
                     <h4 class="text-black font-bold uppercase tracking-widest text-sm">Unternehmen</h4>
                     <ul class="space-y-4">
-                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Start</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Referenzen</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Faq</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Kontakt</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Start</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Referenzen</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Faq</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-black transition-colors uppercase tracking-widest text-[12px] font-bold">Kontakt</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -1090,15 +1310,24 @@
                 <div class="space-y-8">
                     <h4 class="text-black font-bold uppercase tracking-widest text-sm">Partner</h4>
                     <div class="grid grid-cols-2 gap-x-12 gap-y-8 grayscale opacity-70">
-                        <div class="flex items-center stagger-item"><span class="text-black font-black italic text-xl tracking-tighter">METRO</span></div>
-                        <div class="flex items-center stagger-item"><span class="text-black font-serif text-xl">Hilton</span></div>
-                        <div class="flex items-center stagger-item"><span class="text-black font-bold text-sm tracking-widest">ACCORHOTELS</span></div>
-                        <div class="flex items-center stagger-item"><span class="text-black font-serif italic text-lg">ENCHILADA</span></div>
-                        <div class="flex items-center stagger-item"><span class="text-black font-black text-xl">SO USE</span></div>
-                        <div class="flex items-center stagger-item"><span class="text-black font-serif text-xl italic">Marriott</span></div>
-                        <div class="flex items-center stagger-item"><span class="text-black font-black text-xl tracking-tight">VELTINS</span></div>
-                        <div class="flex items-center stagger-item"><span class="text-black font-black text-xl italic">adidas</span></div>
-                        <div class="flex items-center stagger-item"><span class="text-black font-bold text-lg">DEHOGA</span></div>
+                        <div class="flex items-center stagger-item"><span
+                                class="text-black font-black italic text-xl tracking-tighter">METRO</span></div>
+                        <div class="flex items-center stagger-item"><span
+                                class="text-black font-serif text-xl">Hilton</span></div>
+                        <div class="flex items-center stagger-item"><span
+                                class="text-black font-bold text-sm tracking-widest">ACCORHOTELS</span></div>
+                        <div class="flex items-center stagger-item"><span
+                                class="text-black font-serif italic text-lg">ENCHILADA</span></div>
+                        <div class="flex items-center stagger-item"><span class="text-black font-black text-xl">SO
+                                USE</span></div>
+                        <div class="flex items-center stagger-item"><span
+                                class="text-black font-serif text-xl italic">Marriott</span></div>
+                        <div class="flex items-center stagger-item"><span
+                                class="text-black font-black text-xl tracking-tight">VELTINS</span></div>
+                        <div class="flex items-center stagger-item"><span
+                                class="text-black font-black text-xl italic">adidas</span></div>
+                        <div class="flex items-center stagger-item"><span
+                                class="text-black font-bold text-lg">DEHOGA</span></div>
                     </div>
                 </div>
             </div>
@@ -1107,11 +1336,30 @@
             <div class="pb-12 pt-8 flex justify-between items-center border-t border-gray-100">
                 <p class="text-gray-400 text-[12px]">© Ordercube GmbH 2016 - 2026</p>
                 <div class="flex gap-8">
-                    <a href="#" class="text-gray-400 hover:text-black transition-colors text-[12px]">Datenschutzerklärung</a>
-                    <a href="#" class="text-gray-400 hover:text-black transition-colors text-[12px]">Nutzungsbedingungen</a>
-                    <a href="#" class="text-gray-400 hover:text-black transition-colors text-[12px]">Impressum</a>
-                </div>
-            </div>
+                    <a href="#"
+                        class="text-gray-400 hover:text-black transition-colors text-[12px]">Datenschutzerklärung</a>
+                    <a href="#"
+                        class="text-gray-400 hover:text-black transition-colors text-[12px]">Nutzungsbedingungen</a>
+        <div class="flex items-center gap-12 text-white/40 text-sm">
+            <a href="#" class="hover:text-white transition-colors">Impressum</a>
+            <a href="#" class="hover:text-white transition-colors">Datenschutz</a>
+            <a href="#" class="hover:text-white transition-colors">AGB</a>
+        </div>
+    </footer>
+
+    <!-- Custom Scroll Cursor -->
+    <div id="custom-scroll-cursor" class="fixed pointer-events-none z-[9999] opacity-0 transition-opacity duration-300 transform -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center justify-center w-12 h-12" style="left: -100px; top: -100px;">
+        <svg class="absolute inset-0 w-full h-full rotate-[-90deg]" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="black" fill-opacity="0.6" stroke="rgba(255,255,255,0.2)" stroke-width="6"></circle>
+            <circle id="custom-scroll-progress" cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="6" stroke-dasharray="283" stroke-dashoffset="283" class="transition-all duration-[50ms]"></circle>
+        </svg>
+        <svg id="custom-scroll-arrow" class="w-5 h-5 text-white absolute transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+    </div>
+
+    <!-- Scripts -->
+        </div>
         </div>
     </div>
 
@@ -1176,19 +1424,19 @@
                     wrapper.classList.add('active-section');
                     wrapper.querySelectorAll('.fade-in-left').forEach(el => el.classList.remove('fade-out-left'));
                     wrapper.querySelectorAll('.fade-in-right').forEach(el => el.classList.remove('fade-out-right'));
-                    
+
                     // Logo List Animation for Section 1
                     if (idx === 0) animateLogosIn('hero-logo-list');
-                    
+
                     // Staggered Items for all sections
                     animateStaggerIn(wrapper);
                 } else {
                     wrapper.classList.remove('active-section');
                     wrapper.querySelectorAll('.fade-in-left').forEach(el => el.classList.add('fade-out-left'));
                     wrapper.querySelectorAll('.fade-in-right').forEach(el => el.classList.add('fade-out-right'));
-                    
+
                     if (idx === 0) animateLogosOut('hero-logo-list');
-                    
+
                     animateStaggerOut(wrapper);
                 }
             });
@@ -1236,148 +1484,6 @@
             });
         }
 
-        // Global Scroll State
-        let isScrollLocked = false;
-        let globalSectionIndex = 0;
-        let internalStepIndex = 0;
-
-        function getStepsForSection(index) {
-            const wrapper = wrappers[index];
-            if (!wrapper) return 0;
-            
-            let steps = 0;
-            // Custom logic for sections with special sliders
-            if (wrapper.id === 'section-2-wrapper') steps = slidesData.length;
-            else if (wrapper.id === 'section-3-wrapper') steps = featuresData.length;
-            else if (wrapper.id === 'section-4-wrapper') steps = refData.length;
-            else {
-                const staggers = wrapper.querySelectorAll('.stagger-item');
-                steps = staggers.length;
-            }
-            
-            // Ensure at least 3 steps for the "lock" feel
-            return Math.max(steps, 3);
-        }
-
-        function updateInternalStep(sectionIdx, stepIdx, direction) {
-            const wrapper = wrappers[sectionIdx];
-            
-            // Section 2: Slides
-            if (wrapper.id === 'section-2-wrapper') {
-                updateSlide(stepIdx);
-                return;
-            }
-            // Section 3: Features
-            if (wrapper.id === 'section-3-wrapper') {
-                updateFeature(stepIdx);
-                return;
-            }
-            // Section 4: References
-            if (wrapper.id === 'section-4-wrapper') {
-                updateRef(stepIdx);
-                return;
-            }
-            
-            // Default Stagger Logic
-            const items = wrapper.querySelectorAll('.stagger-item');
-            if (direction > 0) {
-                // Show items up to stepIdx
-                items.forEach((item, i) => {
-                    if (i <= stepIdx) {
-                        item.classList.remove('hide');
-                        item.classList.add('show');
-                    }
-                });
-            } else {
-                // Hide items from stepIdx + 1
-                items.forEach((item, i) => {
-                    if (i > stepIdx) {
-                        item.classList.remove('show');
-                        item.classList.add('hide');
-                    }
-                });
-            }
-        }
-
-        function handleInternalScroll(e) {
-            const direction = e.deltaY > 0 ? 1 : -1;
-            const currentWrapper = wrappers[globalSectionIndex];
-            const rect = currentWrapper.getBoundingClientRect();
-            
-            // Check if we are "locked" into the current section
-            const isAtTop = Math.abs(rect.top) < 15;
-            if (!isAtTop) return;
-
-            const totalSteps = getStepsForSection(globalSectionIndex);
-
-            // Forward
-            if (direction > 0) {
-                if (internalStepIndex < totalSteps - 1) {
-                    e.preventDefault();
-                    if (isScrollLocked) return;
-                    
-                    isScrollLocked = true;
-                    lenis.stop(); // Ensure Lenis is stopped while we step
-                    
-                    internalStepIndex++;
-                    updateInternalStep(globalSectionIndex, internalStepIndex, 1);
-                    
-                    setTimeout(() => { 
-                        isScrollLocked = false; 
-                    }, 800);
-                    return;
-                } else {
-                    // Last step reached, allow Lenis to move again
-                    lenis.start();
-                }
-            } 
-            // Backward
-            else {
-                if (internalStepIndex > 0) {
-                    e.preventDefault();
-                    if (isScrollLocked) return;
-                    
-                    isScrollLocked = true;
-                    lenis.stop();
-                    
-                    internalStepIndex--;
-                    updateInternalStep(globalSectionIndex, internalStepIndex, -1);
-                    
-                    setTimeout(() => { 
-                        isScrollLocked = false; 
-                    }, 800);
-                    return;
-                } else {
-                    // First step reached, allow Lenis to move up
-                    lenis.start();
-                }
-            }
-        }
-
-        // Sync globalSectionIndex and manage Lenis stop/start
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            
-            wrappers.forEach((wrapper, idx) => {
-                const rect = wrapper.getBoundingClientRect();
-                
-                // When a section snaps perfectly to top
-                if (Math.abs(rect.top) < 10) {
-                    if (globalSectionIndex !== idx) {
-                        globalSectionIndex = idx;
-                        internalStepIndex = 0;
-                        
-                        // Force a stop when we hit a new section to ensure the lock is felt
-                        lenis.stop();
-                        // Restart after a small delay to allow natural scroll if no steps
-                        if (getStepsForSection(idx) <= 1) {
-                             setTimeout(() => lenis.start(), 500);
-                        }
-                    }
-                }
-            });
-        });
-
         // Initialize state
         window.addEventListener('load', () => {
             // Trigger first section animations immediately
@@ -1386,57 +1492,77 @@
                 firstWrapper.classList.add('active-section');
                 animateStaggerIn(firstWrapper);
                 animateLogosIn('hero-logo-list');
-                
-                // If it's Section 1, we might want to pre-advance some steps or just show all
-                // For now, let's just make sure the frame is correct
+
                 frame.style.opacity = '1';
                 frame.style.transform = 'scale(1)';
             }
-            
-            lenis.stop(); // Start locked
-            setTimeout(() => lenis.start(), 1000);
         });
 
-        window.addEventListener('wheel', handleInternalScroll, { passive: false });
-        window.addEventListener('touchmove', handleInternalScroll, { passive: false });
-
         // Section 2 Interactive Slides Logic
+        // Global Word Animation Helper
+        function animateWords(element, text) {
+            if (!element) return;
+            const words = text.split(' ');
+            element.innerHTML = words.map((word, i) =>
+                `<span class="word-stagger" style="animation-delay: ${i * 0.04}s">${word}</span>`
+            ).join(' ');
+            element.classList.remove('show');
+            void element.offsetWidth;
+            element.classList.add('show');
+            element.style.opacity = '1';
+        }
+
         const slidesData = [
             {
+                title: "BESTELLWUNSCH",
                 image: "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                text: "Gäste sind bereit zu bestellen - aber kein Kellner in Sicht. Dieses klassische Szenario kann selbst mit dem besten Servicepersonal passieren. Besonders wenn Gäste dann ihre Meinung ändern, geht Umsatz verloren."
+                problem: "Gäste sind bereit zu bestellen - aber kein Kellner in Sicht. Dieses klassische Szenario kann selbst mit dem besten Servicepersonal passieren. Besonders wenn Gäste dann ihre Meinung ändern, geht Umsatz verloren.",
+                solution: "Über einen Ordercube können Gäste den Service rufen. Das Servicepersonal wird sofort benachrichtigt und kann den Tisch schnellstmöglich bedienen."
             },
             {
+                title: "GETRÄNK ANFORDERN",
                 image: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                text: "Ein leeres Glas bedeutet Stillstand beim Umsatz. Mit Ordercube signalisieren Gäste ihren Getränkewunsch diskret und sofort. Das Personal kann gezielt reagieren und die Frequenz der Bestellungen deutlich steigern."
+                problem: "Ein Gast möchte zahlen, aber das Personal ist mit anderen Bestellungen beschäftigt. Die Wartezeit am Ende des Besuchs trübt den Gesamteindruck und verzögert die Neubelegung des Tisches.",
+                solution: "Mit der 'Zahlen'-Funktion am Ordercube weiß der Kellner sofort Bescheid. Er kann direkt die Rechnung mitbringen, was den Bezahlprozess beschleunigt und den Tisch schneller frei macht."
             },
             {
+                title: "BEREIT ZU ZAHLEN",
                 image: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                text: "Lange Wartezeiten beim Bezahlen sind der häufigste Grund für Frust am Ende eines Besuchs. Eine schnelle Abwicklung sorgt für zufriedene Gäste und einen schnelleren Tischwechsel (Turnover)."
+                problem: "Gäste haben ausgetrunken, werden aber vom Service übersehen. Jede Minute ohne Getränk ist verschenkter Umsatz und ein potenziell unzufriedener Gast.",
+                solution: "Ein kurzer Druck auf die 'Nachbestellen'-Taste informiert den Service. Das Personal kann gezielt reagieren, was den Getränkeumsatz nachweislich um bis zu 20% steigert."
             },
             {
+                title: "UNÜBERSICHTLICH",
                 image: "https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                text: "In großen Außenbereichen oder verwinkelten Räumen verliert man leicht den Überblick. Ordercube macht unsichtbare Bedarfe sichtbar und strukturiert die Laufwege Ihres Teams effizient."
+                problem: "In großen Außenbereichen oder verwinkelten Räumen verliert man leicht den Überblick. Ohne System bleibt Service am Gast oft Glückssache oder erfordert zu viel Personal.",
+                solution: "Ordercube macht unsichtbare Bedarfe sichtbar. Die digitale Tischübersicht strukturiert die Laufwege Ihres Teams effizient und sorgt für lückenlosen Service in jedem Winkel."
             },
             {
+                title: "PERSONALMANGEL",
                 image: "https://images.pexels.com/photos/2101187/pexels-photo-2101187.jpeg?auto=compress&cs=tinysrgb&w=1920",
-                text: "Weniger Personal muss mehr leisten? Ordercube entlastet Ihr Team durch intelligente Priorisierung. So schaffen Ihre Mitarbeiter mehr Service am Gast in kürzerer Zeit, ohne dabei auszubrennen."
+                problem: "Personalmangel zwingt Teams zu Höchstleistungen. Ohne Unterstützung sinkt die Servicequalität, während der Stresspegel der Mitarbeiter gefährlich ansteigt.",
+                solution: "Ordercube entlastet Ihr Team durch intelligente Priorisierung. So schaffen Ihre Mitarbeiter mehr Service am Gast in kürzerer Zeit, ohne dabei auszubrennen."
             }
         ];
 
         const headlines = document.querySelectorAll('#headline-stack > div');
         const infoText = document.getElementById('section-2-info-text');
+        const infoTextDesktop = document.getElementById('section-2-info-text-desktop');
         const bgImgFront = document.getElementById('section-2-bg-img-front');
         const bgImgBack = document.getElementById('section-2-bg-img-back');
         const nextSlideBtn = document.getElementById('next-slide-btn');
+        const nextSlideBtnMobile = document.getElementById('next-slide-btn-mobile');
         const ctaSlideBtn = document.getElementById('cta-slide-btn');
+
         let currentSlideIndex = 0;
+        let isSolutionView = true;
         let isTransitioning = false;
 
-        function updateSlide(index) {
-            if (isTransitioning || index === currentSlideIndex) return;
+        function updateSlide(index, forceSolution = true) {
+            if (isTransitioning || (index === currentSlideIndex && forceSolution === isSolutionView)) return;
             isTransitioning = true;
             currentSlideIndex = index;
+            isSolutionView = forceSolution;
 
             // Update Headline States
             headlines.forEach((h, i) => {
@@ -1444,12 +1570,49 @@
                 else h.classList.remove('is-active');
             });
 
-            // Update Content with fast fade
-            infoText.style.opacity = '0';
-            setTimeout(() => {
-                infoText.textContent = slidesData[index].text;
-                infoText.style.opacity = '1';
-            }, 300);
+            // Update Pagination & Mobile Title
+            const pagination = document.getElementById('section-2-pagination');
+            if (pagination) {
+                pagination.textContent = `${index + 1} / ${slidesData.length}`;
+                pagination.classList.remove('show');
+                void pagination.offsetWidth;
+                pagination.classList.add('show');
+            }
+
+            const mobileTitle = document.getElementById('section-2-title-mobile');
+            if (mobileTitle) {
+                mobileTitle.textContent = slidesData[index].title;
+                const titleParent = mobileTitle.closest('.stagger-item') || mobileTitle.parentElement;
+                titleParent.classList.remove('show');
+                void titleParent.offsetWidth;
+                titleParent.classList.add('show');
+            }
+
+            // Update Content
+            const targetText = isSolutionView ? slidesData[index].solution : slidesData[index].problem;
+
+            // Mobile Word Animation
+            if (infoText) animateWords(infoText, targetText);
+
+            // Desktop Fast Fade
+            if (infoTextDesktop) {
+                infoTextDesktop.style.opacity = '0';
+                setTimeout(() => {
+                    infoTextDesktop.textContent = targetText;
+                    infoTextDesktop.style.opacity = '1';
+                }, 300);
+            }
+
+            // Update CTA Button Text & Icon
+            const ctaMainText = ctaSlideBtn.querySelector('div:first-child');
+            if (ctaMainText) ctaMainText.textContent = isSolutionView ? "Zurück zum Problem" : "So hilft Ordercube";
+
+            const ctaIcon = ctaSlideBtn.querySelector('svg');
+            if (ctaIcon) {
+                ctaIcon.innerHTML = isSolutionView
+                    ? '<path d="M15 19l-7-7 7-7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />'
+                    : '<path d="M9 5l7 7-7 7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />';
+            }
 
             // True Cross-fade Image Logic
             bgImgBack.src = slidesData[index].image;
@@ -1474,19 +1637,9 @@
             });
         });
 
-        if (nextSlideBtn) {
-            nextSlideBtn.addEventListener('click', () => {
-                let nextIndex = (currentSlideIndex + 1) % slidesData.length;
-                updateSlide(nextIndex);
-            });
-        }
-
-        if (ctaSlideBtn) {
-            ctaSlideBtn.addEventListener('click', () => {
-                let nextIndex = (currentSlideIndex + 1) % slidesData.length;
-                updateSlide(nextIndex);
-            });
-        }
+        if (nextSlideBtn) nextSlideBtn.addEventListener('click', () => updateSlide((currentSlideIndex + 1) % slidesData.length));
+        if (nextSlideBtnMobile) nextSlideBtnMobile.addEventListener('click', () => updateSlide((currentSlideIndex + 1) % slidesData.length));
+        if (ctaSlideBtn) ctaSlideBtn.addEventListener('click', () => updateSlide(currentSlideIndex, !isSolutionView));
 
         // Section 3 Features Logic
         const featuresData = [
@@ -1760,6 +1913,212 @@
                     lenis.scrollTo(section6);
                 }
             });
+        });
+
+        // --- Custom Scroll Lock & Cursor Logic (Desktop Only) ---
+        const scrollCursor = document.getElementById('custom-scroll-cursor');
+        const scrollProgress = document.getElementById('custom-scroll-progress');
+        const scrollArrow = document.getElementById('custom-scroll-arrow');
+        
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        
+        window.addEventListener('mousemove', (e) => {
+            if (window.innerWidth < 768) return;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            scrollCursor.style.left = `${mouseX}px`;
+            scrollCursor.style.top = `${mouseY}px`;
+        });
+
+        const lockedSections = Array.from(document.querySelectorAll('#hero-section, .section-wrapper')).filter(Boolean);
+
+        let accumulatedScroll = 0;
+        const scrollThreshold = 900; // Amount of wheel delta to complete the circle
+        let isProcessingStep = false;
+        let cursorTimeout;
+        let lockCooldown = false;
+        
+        let currentLockedSectionIndex = -1;
+        let isSnapping = false;
+
+        // 1. Robust Lock: Intersection Observer catches sections no matter the scroll speed
+        const sectionObserver = new IntersectionObserver((entries) => {
+            if (window.innerWidth < 768) return; // Desktop only
+
+            entries.forEach(entry => {
+                // When a section becomes 50% visible, grab it!
+                if (entry.isIntersecting && !isSnapping) {
+                    const idx = lockedSections.indexOf(entry.target);
+                    
+                    if (idx !== -1 && currentLockedSectionIndex !== idx) {
+                        isSnapping = true;
+                        
+                        // Restart briefly to allow the smooth snap animation
+                        lenis.start();
+                        
+                        // Force smooth snap. lock: true and force: true help prevent lenis from aborting
+                        lenis.scrollTo(entry.target, { 
+                            duration: 0.8,
+                            lock: true,
+                            force: true 
+                        });
+                        
+                        // Wait for snap to finish perfectly, then TRUE LOCK
+                        setTimeout(() => {
+                            const rect = entry.target.getBoundingClientRect();
+                            // Ensure it's perfectly aligned before locking
+                            if (Math.abs(rect.top) < 20) {
+                                currentLockedSectionIndex = idx;
+                                lenis.stop(); 
+                                accumulatedScroll = 0;
+                                isSnapping = false;
+                                
+                                // Force frame to activate
+                                const frame = document.getElementById('global-frame');
+                                if(frame) {
+                                    frame.style.opacity = '1';
+                                    frame.style.transform = 'scale(1)';
+                                }
+                            } else {
+                                // If something went wrong, release so they can scroll natively to try again
+                                isSnapping = false;
+                            }
+                        }, 900);
+                    }
+                }
+            });
+        }, {
+            threshold: 0.5 // Require it to be 50% visible to avoid snapping too early
+        });
+
+        // CRITICAL INTERRUPT: Prevent Lenis from aborting the animation
+        // By using capture: true, we intercept the event BEFORE Lenis sees it
+        window.addEventListener('wheel', (e) => {
+            if (isSnapping) {
+                e.preventDefault();
+                e.stopPropagation(); // Hide event from Lenis!
+            }
+        }, { passive: false, capture: true });
+        
+        window.addEventListener('touchmove', (e) => {
+            if (isSnapping) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }, { passive: false, capture: true });
+
+        // Observe all lockable sections
+        lockedSections.forEach(sec => sectionObserver.observe(sec));
+
+        // 2. Accumulate Progress
+        window.addEventListener('wheel', (e) => {
+            if (window.innerWidth < 768) return; // Desktop only
+
+            if (currentLockedSectionIndex !== -1) {
+                e.preventDefault(); // Stop native wheel behavior
+
+                if (isProcessingStep || lockCooldown || isSnapping) return;
+
+                scrollCursor.style.opacity = '1';
+                clearTimeout(cursorTimeout);
+
+                accumulatedScroll += e.deltaY;
+
+                // Clamp accumulation
+                if (accumulatedScroll > scrollThreshold) accumulatedScroll = scrollThreshold;
+                if (accumulatedScroll < -scrollThreshold) accumulatedScroll = -scrollThreshold;
+
+                // Update SVG circle
+                let percentage = Math.abs(accumulatedScroll) / scrollThreshold;
+                let offset = 283 - (283 * Math.min(percentage, 1));
+                scrollProgress.style.strokeDashoffset = offset;
+
+                // Update Arrow Direction
+                if (accumulatedScroll > 0) {
+                    scrollArrow.style.transform = 'rotate(0deg)'; // down
+                } else {
+                    scrollArrow.style.transform = 'rotate(180deg)'; // up
+                }
+
+                // Trigger Step when circle is complete
+                if (Math.abs(accumulatedScroll) >= scrollThreshold) {
+                    isProcessingStep = true;
+                    scrollCursor.style.opacity = '0';
+                    let direction = accumulatedScroll > 0 ? 1 : -1;
+                    accumulatedScroll = 0;
+                    scrollProgress.style.strokeDashoffset = 283;
+                    
+                    handleLockedStep(currentLockedSectionIndex, direction);
+
+                    setTimeout(() => {
+                        isProcessingStep = false;
+                        lockCooldown = true;
+                        setTimeout(() => lockCooldown = false, 500); // Wait before next accumulation
+                    }, 800);
+                }
+
+                // Hide cursor if scrolling stops
+                cursorTimeout = setTimeout(() => {
+                    scrollCursor.style.opacity = '0';
+                    accumulatedScroll = 0;
+                    scrollProgress.style.strokeDashoffset = 283;
+                }, 500);
+            }
+        }, { passive: false });
+
+        // 3. Handle Navigation (Only Section to Section)
+        function handleLockedStep(sectionIdx, direction) {
+            currentLockedSectionIndex = -1; // Release Lock
+            lenis.start(); // 🟢 Re-enable scroll
+            
+            if (direction > 0) {
+                // Scroll Down -> Next Section
+                if (sectionIdx < lockedSections.length - 1) {
+                    // Smoothly start scrolling to next section. The observer will catch it at 40% and snap!
+                    lenis.scrollTo(lockedSections[sectionIdx + 1], { duration: 1.0 });
+                } else {
+                    // End of locked sections (e.g. at Section 3, going down to Section 4). Just push them down into normal scroll zone.
+                    lenis.scrollTo(window.scrollY + window.innerHeight * 0.8, { duration: 1.0 });
+                }
+            } else {
+                // Scroll Up -> Previous Section
+                if (sectionIdx > 0) {
+                    lenis.scrollTo(lockedSections[sectionIdx - 1], { duration: 1.0 });
+                } else {
+                    // Reached the very top, just release
+                }
+            }
+        }
+
+        // Global Staggered Animation Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const items = entry.target.querySelectorAll('.stagger-item');
+                    items.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.classList.add('show');
+                            item.classList.remove('hide');
+                        }, index * 120);
+                    });
+                } else {
+                    const items = entry.target.querySelectorAll('.stagger-item');
+                    items.forEach(item => {
+                        item.classList.remove('show');
+                        item.classList.add('hide');
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section-wrapper, #hero-section').forEach(section => {
+            observer.observe(section);
         });
     </script>
 </body>
